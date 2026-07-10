@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CaseGrid from '../components/CaseGrid.astro';
+import ProjectCta from '../components/ProjectCta.astro';
+---
+
+<BaseLayout
+  title="Разработка цифровых продуктов"
+  description="Разработка лендингов, сайтов, Tilda и WordPress-доработок, интернет-магазинов, веб-сервисов и автоматизации под ключ."
+  path="/development/"
+>
+  <section class="page-hero">
+    <p class="section-label">Разработка под ключ</p>
+    <h1>Проектируем и запускаем сайты, магазины и веб-сервисы под реальные задачи бизнеса</h1>
+    <p>
+      Лендинг, Tilda или WordPress-сайт, интернет-магазин, личный кабинет, бот или MVP должны
+      не просто выглядеть готовыми, а решать конкретную задачу: привлекать заявки, принимать оплату,
+      ускорять процессы или открывать новый канал продаж.
+    </p>
+  </section>
+
+  <section class="section split-section">
+    <div>
+      <h2>Берём на себя весь основной контур</h2>
+      <p>
+        Помогаем пройти путь от структуры и интерфейса до серверной части, базы данных,
+        интеграций, деплоя и последующей поддержки. На старте оставляем только то, что нужно
+        для уверенного запуска.
+      </p>
+    </div>
+    <div class="stack-list">
+      <span>Лендинг</span>
+      <span>Tilda</span>
+      <span>WordPress</span>
+      <span>Интернет-магазин</span>
+      <span>Личный кабинет</span>
+      <span>Серверная часть</span>
+      <span>База данных</span>
+      <span>Telegram-бот</span>
+      <span>Онлайн-оплата</span>
+      <span>CRM</span>
+      <span>Автоматизация</span>
+    </div>
+  </section>
+
+  <section class="section demand-section" aria-labelledby="development-demand-title">
+    <div class="section-heading">
+      <div>
+        <p class="section-label">Частые задачи</p>
+        <h2 id="development-demand-title">С чем чаще всего приходят</h2>
+      </div>
+      <p>
+        Самые частые запросы — не абстрактная разработка, а конкретные улучшения:
+        заявки, каталог, оплата, мобильная версия, перенос или доработка готового сайта.
+      </p>
+    </div>
+    <div class="demand-grid compact">
+      <article class="demand-item">
+        <h3>Tilda / WordPress</h3>
+        <p>Доработать страницы, меню, блоки, формы, SEO-мета, мобильную версию или перенести сайт.</p>
+      </article>
+      <article class="demand-item">
+        <h3>Лендинг для заявок</h3>
+        <p>Собрать продающую страницу, форму сбора лидов, структуру блоков и понятные CTA.</p>
+      </article>
+      <article class="demand-item">
+        <h3>Магазин и каталог</h3>
+        <p>Карточки товаров, фильтры, корзина, онлайн-оплата, заявки и простое управление контентом.</p>
+      </article>
+      <article class="demand-item">
+        <h3>Расчёты и интеграции</h3>
+        <p>Калькуляторы, API, CRM, Telegram-уведомления, таблицы и автоматизация ручных операций.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="process-list">
+      <article>
+        <h3>1. Понять задачу</h3>
+        <p>Определяем цель, аудиторию, ограничения и минимальный набор функций, который даст бизнесу проверяемый результат.</p>
+      </article>
+      <article>
+        <h3>2. Собрать первую версию</h3>
+        <p>Проектируем интерфейс, собираем логику, подключаем данные, уведомления, оплаты, CRM или другие нужные сервисы.</p>
+      </article>
+      <article>
+        <h3>3. Запустить и улучшать</h3>
+        <p>Публикуем продукт, проверяем сценарии, закрываем слабые места и развиваем проект по реальной обратной связи.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <p class="section-label">Релевантные кейсы</p>
+      <h2>Примеры задач, которые близки к этому направлению</h2>
+    </div>
+    <CaseGrid compact />
+  </section>
+
+  <ProjectCta
+    title="Заполните короткую заявку на главной"
+    text="Расскажите, какой продукт нужно запустить. Мы посмотрим вводные, уточним детали и предложим первый этап разработки."
+  />
+</BaseLayout>

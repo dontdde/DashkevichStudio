@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCta from '../components/ProjectCta.astro';
+
+const aiFaq = [
+  {
+    question: 'Что такое AI-агент простыми словами?',
+    answer:
+      'Это помощник, который получает входные данные, принимает решение по правилам или базе знаний и запускает действие: ответ, уведомление, запись в CRM или задачу команде.'
+  },
+  {
+    question: 'С чего лучше начинать внедрение AI?',
+    answer:
+      'С одного процесса: обработка заявок, ответы на типовые вопросы, поиск по документам, резюме переписок, уведомления или подготовка черновиков.'
+  },
+  {
+    question: 'Можно подключить AI к Telegram, CRM или таблицам?',
+    answer:
+      'Да. Типовой сценарий — бот или сервис принимает сообщение, анализирует его, сохраняет данные и отправляет результат в Telegram, CRM, таблицу или внутренний инструмент.'
+  },
+  {
+    question: 'AI заменит сотрудников?',
+    answer:
+      'Чаще задача не в замене, а в снятии рутины: собрать вводные, классифицировать заявку, подготовить черновик ответа и передать человеку уже структурированную информацию.'
+  },
+  {
+    question: 'Можно сначала проверить идею без большого бюджета?',
+    answer:
+      'Да. Лучше собрать небольшой прототип на одном сценарии, проверить пользу, а потом расширять автоматизацию на другие процессы.'
+  }
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: aiFaq.map((item) => ({
+    '@type': 'Question',
+    name: item.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.answer
+    }
+  }))
+};
+---
+
+<BaseLayout
+  title="AI-агенты и автоматизация"
+  description="Внедрение AI-агентов и автоматизации в рабочие процессы: заявки, документы, Telegram, CRM, API и внутренние инструменты."
+  path="/ai-agents/"
+  schema={schema}
+>
+  <section class="page-hero ai-hero">
+    <p class="section-label">AI-агенты и автоматизация</p>
+    <h1>Внедряем AI туда, где он ускоряет работу команды и снижает ручную нагрузку</h1>
+    <p>
+      AI-агент может разбирать входящие заявки, искать информацию в документах,
+      готовить ответы, обновлять CRM и запускать действия в Telegram или внутреннем сервисе.
+    </p>
+  </section>
+
+  <section class="section split-section">
+    <div>
+      <h2>От простого помощника до связки нескольких процессов</h2>
+      <p>
+        Начинать лучше с одного понятного сценария: заявка, документ, переписка,
+        база знаний или уведомление. Когда польза подтверждена, автоматизацию можно расширять.
+      </p>
+    </div>
+    <div class="ai-steps">
+      <article>
+        <span>Input</span>
+        <p>Заявка, документ, сообщение, таблица или API-событие.</p>
+      </article>
+      <article>
+        <span>Reasoning</span>
+        <p>Классификация, уточнения, поиск по базе знаний, выбор инструмента.</p>
+      </article>
+      <article>
+        <span>Action</span>
+        <p>Ответ клиенту, задача в CRM, Telegram-уведомление или обновление данных.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <p class="section-label">Сценарии</p>
+      <h2>Где AI-агенты дают быстрый эффект</h2>
+    </div>
+    <div class="service-grid">
+      <div class="service-item">Первичная обработка заявок</div>
+      <div class="service-item">AI-помощник по внутренним документам</div>
+      <div class="service-item">Telegram-бот с LLM и инструментами</div>
+      <div class="service-item">Резюме переписок и звонков</div>
+      <div class="service-item">Подготовка КП и ответов клиентам</div>
+      <div class="service-item">Агентные цепочки для CRM-процессов</div>
+    </div>
+  </section>
+
+  <section class="section faq-section" aria-labelledby="ai-faq-title">
+    <div class="section-heading">
+      <div>
+        <p class="section-label">FAQ</p>
+        <h2 id="ai-faq-title">Что важно понять про AI-агентов</h2>
+      </div>
+      <p>
+        AI полезен не везде. Сначала выбираем понятный сценарий, где автоматизация
+        реально экономит время или помогает быстрее обрабатывать заявки.
+      </p>
+    </div>
+    <div class="faq-list">
+      {aiFaq.map((item) => (
+        <details>
+          <summary>{item.question}</summary>
+          <p>{item.answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <ProjectCta
+    title="Опишите процесс, который хотите автоматизировать"
+    text="На главной есть единая форма заявки: выберите AI-автоматизацию, оставьте контакт и коротко опишите сценарий."
+  />
+</BaseLayout>

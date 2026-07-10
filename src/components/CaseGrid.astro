@@ -1,0 +1,66 @@
+---
+import { cases, upcomingCases } from '../data/site';
+
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<div class={`case-grid ${compact ? 'case-grid-compact' : ''}`}>
+  {cases.map((item) => (
+    <article class="case-card case-card-featured" id="kittennis">
+      <a class="case-visual tennis-case-visual" href="/cases/#kittennis" aria-label="Открыть кейс KITTENNIS.BY">
+        <img src="/cases/kittennis/home-light-full.png" alt="" loading="lazy" />
+        <div class="case-device">
+          <img src="/cases/kittennis/home-light-mobile-full.png" alt="" loading="lazy" />
+        </div>
+      </a>
+      <div class="case-body">
+        <div class="case-meta">
+          <span>{item.category}</span>
+          <span>{item.direction}</span>
+        </div>
+        <h3>{item.title}</h3>
+        <p>{item.summary}</p>
+        {!compact && (
+          <>
+            <div class="case-tags" aria-label="Что сделано">
+              {item.highlights?.map((highlight) => <span>{highlight}</span>)}
+            </div>
+            <div class="case-details">
+              {item.details?.map((detail) => (
+                <div>
+                  <strong>{detail.title}</strong>
+                  <p>{detail.text}</p>
+                </div>
+              ))}
+            </div>
+            <div class="case-gallery" aria-label="Фрагменты проекта KITTENNIS.BY">
+              <figure class="case-shot case-shot-wide">
+                <img src="/cases/kittennis/home-light-full.png" alt="Полный первый экран сайта KITTENNIS.BY в светлой теме" loading="eager" />
+                <figcaption>Светлая тема: первый экран, навигация, заявка в Дивизион и быстрые результаты.</figcaption>
+              </figure>
+              <figure class="case-shot">
+                <img src="/cases/kittennis/home-dark-full.png" alt="Полный первый экран сайта KITTENNIS.BY в тёмной теме" loading="eager" />
+                <figcaption>Тёмная тема: тот же сценарий, но с вечерней спортивной атмосферой.</figcaption>
+              </figure>
+              <figure class="case-shot">
+                <img src="/cases/kittennis/results-light-full.png" alt="Полный экран раздела результатов матчей на сайте KITTENNIS.BY" loading="eager" />
+                <figcaption>Раздел результатов: матчи, счёт и быстрый переход к деталям.</figcaption>
+              </figure>
+            </div>
+          </>
+        )}
+        <p class="case-result">{item.result}</p>
+      </div>
+    </article>
+  ))}
+  {upcomingCases.map((item) => (
+    <article class="case-card case-card-upcoming">
+      <span>TO BE<br />CONTINUED...</span>
+      <p>{item}</p>
+    </article>
+  ))}
+</div>

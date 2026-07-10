@@ -1,0 +1,24 @@
+---
+import { site } from '../data/site';
+import RequestForm from './RequestForm.astro';
+import TelegramIcon from './TelegramIcon.astro';
+import InstagramIcon from './InstagramIcon.astro';
+---
+
+<section class="contact-panel" aria-labelledby="contact-title">
+  <div>
+    <p class="section-label">Заявка</p>
+    <h2 id="contact-title">Опишите проект, а мы предложим первый этап</h2>
+    <p>
+      Если ТЗ ещё нет, это нормально. Достаточно описать цель, текущую ситуацию
+      и желаемый результат. Остальное уточним в переписке.
+    </p>
+    <div class="contact-mini">
+      <TelegramIcon />
+      <InstagramIcon />
+      <a href={`mailto:${site.email}`}>{site.email}</a>
+      <a href={site.phoneHref}>{site.phoneLabel}</a>
+    </div>
+  </div>
+  <RequestForm />
+</section>

@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout
+  title="Реквизиты"
+  description="Реквизиты Dashkevich Studio для связи и юридической информации."
+  path="/requisites/"
+>
+  <section class="legal-page">
+    <p class="section-label">Реквизиты</p>
+    <h1>Реквизиты организации / ИП</h1>
+    <p class="legal-note">Заполните этот раздел реальными данными перед публикацией сайта.</p>
+
+    <div class="requisites-list">
+      <div><span>Название</span><strong>Dashkevich Studio / [ИП или организация]</strong></div>
+      <div><span>УНП / ИНН</span><strong>[указать]</strong></div>
+      <div><span>Адрес</span><strong>[указать]</strong></div>
+      <div><span>Email</span><strong><a href={`mailto:${site.email}`}>{site.email}</a></strong></div>
+      <div><span>Телефон</span><strong><a href={site.phoneHref}>{site.phoneLabel}</a></strong></div>
+      <div><span>Instagram</span><strong><a href={site.instagramUrl}>{site.instagramLabel}</a></strong></div>
+    </div>
+  </section>
+</BaseLayout>

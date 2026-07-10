@@ -1,0 +1,14 @@
+.git
+.github
+.env
+node_modules
+dist
+.astro
+backend/**/bin
+backend/**/obj
+data
+backups
+reports
+tmp
+work
+output

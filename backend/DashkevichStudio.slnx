@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DashkevichStudio.Api/DashkevichStudio.Api.csproj" />
+    <Project Path="src/DashkevichStudio.Application/DashkevichStudio.Application.csproj" />
+    <Project Path="src/DashkevichStudio.Domain/DashkevichStudio.Domain.csproj" />
+    <Project Path="src/DashkevichStudio.Infrastructure/DashkevichStudio.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DashkevichStudio.UnitTests/DashkevichStudio.UnitTests.csproj" />
+  </Folder>
+</Solution>

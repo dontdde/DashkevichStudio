@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CaseGrid from '../components/CaseGrid.astro';
+---
+
+<BaseLayout
+  title="Кейсы"
+  description="Кейсы Dashkevich Studio: разработка продуктов, AI-автоматизация, внутренние инструменты, Telegram-боты и интеграции."
+  path="/cases/"
+>
+  <section class="page-hero">
+    <p class="section-label">Cases</p>
+    <h1>Кейсы Dashkevich Studio</h1>
+    <p>
+      Реальные проекты, которые можно показать публично: задача, решение,
+      визуальная логика, технические детали и результат.
+    </p>
+  </section>
+
+  <section class="section">
+    <CaseGrid />
+  </section>
+</BaseLayout>

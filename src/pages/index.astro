@@ -1,0 +1,276 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RequestForm from '../components/RequestForm.astro';
+import { cases, demandInsights, services, site } from '../data/site';
+
+const featuredCase = cases[0];
+
+const homeFaq = [
+  {
+    question: 'Можно обратиться без готового ТЗ?',
+    answer:
+      'Да. Достаточно описать цель, текущую ситуацию и желаемый результат. Мы поможем собрать задачу в понятный первый этап.'
+  },
+  {
+    question: 'Вы делаете только сайты или полноценные продукты тоже?',
+    answer:
+      'Делаем и сайты, и полноценные веб-сервисы: frontend, backend, базы данных, интеграции, Telegram-боты, CRM-связки, запуск и поддержку.'
+  },
+  {
+    question: 'Можно доработать существующий Tilda, WordPress или самописный сайт?',
+    answer:
+      'Да. Можем поправить структуру, формы, мобильную версию, SEO-базу, скорость, интеграции, оплату или отдельные страницы.'
+  },
+  {
+    question: 'Сколько занимает запуск первой версии?',
+    answer:
+      'Зависит от объёма. Небольшую страницу или доработку можно запустить быстро, а продукт с backend, оплатой и интеграциями лучше делить на этапы.'
+  },
+  {
+    question: 'Что входит в бесплатный мини-аудит?',
+    answer:
+      'Мы смотрим вводные, сайт или описание процесса и даём короткую рекомендацию: что мешает сейчас, что можно улучшить первым и какой следующий шаг имеет смысл.'
+  }
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: site.name,
+    url: site.url,
+    email: site.email,
+    telephone: site.phoneLabel,
+    description: site.description,
+    areaServed: 'International',
+    sameAs: [site.telegramUrl, site.instagramUrl],
+    serviceType: [
+      'Product development',
+      'Landing page development',
+      'Tilda development',
+      'WordPress development',
+      'E-commerce development',
+      'AI automation',
+      'Backend development',
+      'API integrations',
+      'Telegram bot development',
+      'CRM automation'
+    ]
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: site.name,
+    url: site.url,
+    inLanguage: 'ru'
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: homeFaq.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.answer
+      }
+    }))
+  }
+];
+---
+
+<BaseLayout title={site.name} path="/" schema={schema}>
+  <section class="hero hero-single">
+    <div class="hero-copy">
+      <p class="section-label">Сайты, магазины, автоматизация и AI</p>
+      <h1>Запускаем сайты, сервисы и автоматизацию, которые приводят заявки и экономят время</h1>
+      <p class="hero-lead">
+        Делаем лендинги, Tilda и WordPress-доработки, интернет-магазины, формы заявок,
+        Telegram-ботов и интеграции. Работаем быстро, держим дедлайны и заранее показываем понятный план.
+      </p>
+      <div class="hero-actions">
+        <a class="button primary" href="#request">Оставить заявку</a>
+        <a class="button secondary" href="/cases/">Посмотреть кейсы</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="proof-strip" aria-label="Почему с нами спокойно запускать проект">
+    <article>
+      <span>01</span>
+      <strong>Сроки под контролем</strong>
+      <p>Фиксируем этапы, показываем прогресс и не оставляем клиента в тишине до финального дня.</p>
+    </article>
+    <article>
+      <span>02</span>
+      <strong>Опытные специалисты</strong>
+      <p>Работаем с frontend, backend, интеграциями, ботами, автоматизацией и поддержкой после запуска.</p>
+    </article>
+    <article>
+      <span>03</span>
+      <strong>Запуск без лишнего шума</strong>
+      <p>Собираем ровно тот первый релиз, который можно проверить на клиентах и дальше развивать.</p>
+    </article>
+  </section>
+
+  <section class="audit-offer" aria-labelledby="audit-title">
+    <div class="audit-copy">
+      <p class="section-label">Бесплатный мини-аудит</p>
+      <h2 id="audit-title">Посмотрим вашу задачу и подскажем, с чего начать</h2>
+      <p>
+        Если непонятно, нужен ли новый сайт, доработка, бот, CRM-интеграция или AI-автоматизация,
+        отправьте текущую ситуацию. Мы коротко разберём вводные и предложим первый практичный шаг.
+      </p>
+    </div>
+    <div class="audit-card" aria-label="Что входит в мини-аудит">
+      <div>
+        <span>01</span>
+        <strong>Что мешает заявкам или процессу</strong>
+      </div>
+      <div>
+        <span>02</span>
+        <strong>Что можно улучшить быстро</strong>
+      </div>
+      <div>
+        <span>03</span>
+        <strong>Какой первый этап будет разумным</strong>
+      </div>
+      <a class="button primary" href="#request">Получить мини-аудит</a>
+    </div>
+  </section>
+
+  <section class="request-section" id="request" aria-labelledby="request-title">
+    <div class="request-intro">
+      <p class="section-label">Заявка</p>
+      <h2 id="request-title">Расскажите, что нужно сделать</h2>
+      <p>
+        Можно прийти с идеей, черновым ТЗ, макетом или проблемой в текущем процессе.
+        Мы поможем сформулировать задачу и предложим понятный план первого этапа.
+      </p>
+    </div>
+    <RequestForm />
+  </section>
+
+  <section class="section demand-section" aria-labelledby="demand-title">
+    <div class="section-heading">
+      <div>
+        <p class="section-label">Чаще всего приходят за этим</p>
+        <h2 id="demand-title">Задачи, которые бизнес реально ищет</h2>
+      </div>
+      <p>
+        По входящим заявкам чаще всего нужны сайты для лидов, Tilda/WordPress-доработки,
+        интернет-магазины, онлайн-оплата, каталоги и автоматизация заявок.
+      </p>
+    </div>
+    <div class="demand-grid">
+      {demandInsights.map((item) => (
+        <article class="demand-item">
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="case-feature" aria-labelledby="case-feature-title">
+    <a class="case-tab" href="/cases/">Посмотреть кейсы</a>
+    <div class="case-preview">
+      <div>
+        <p class="section-label">Реальный кейс</p>
+        <h2 id="case-feature-title">{featuredCase.title}</h2>
+        <p>
+          {featuredCase.summary}
+        </p>
+        <div class="case-preview-actions">
+          <a class="button primary" href="/cases/#kittennis">Посмотреть кейс</a>
+        </div>
+      </div>
+      <a class="case-preview-art tennis-preview-art" href="/cases/#kittennis" aria-label="Открыть кейс KITTENNIS.BY">
+        <img src="/cases/kittennis/home-light-full.png" alt="Светлая версия первого экрана сайта KITTENNIS.BY" loading="eager" />
+        <span class="preview-pill">KIT Division</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="answer-strip" aria-labelledby="studio-title">
+    <div class="studio-card">
+      <div class="studio-copy">
+        <p class="section-label">Кто мы</p>
+        <h2 id="studio-title">Dashkevich Studio — техническая команда, которая доводит продукт до запуска</h2>
+        <p>
+          Берём на себя проектирование, frontend, backend, Tilda и WordPress,
+          интернет-магазины, интеграции, AI-автоматизацию и поддержку после релиза.
+          Работаем так, чтобы клиент видел понятный план, быстрые итерации и реальный прогресс,
+          а не бесконечные обещания в переписке.
+        </p>
+        <div class="studio-principles" aria-label="Принципы работы">
+          <span>Сроки фиксируем заранее</span>
+          <span>Показываем ход работы</span>
+          <span>Запускаем и поддерживаем</span>
+        </div>
+      </div>
+      <div class="studio-signal" aria-hidden="true">
+        <span class="signal-orbit orbit-a"></span>
+        <span class="signal-orbit orbit-b"></span>
+        <span class="signal-core">D</span>
+        <span class="signal-pill pill-a">idea</span>
+        <span class="signal-pill pill-b">build</span>
+        <span class="signal-pill pill-c">launch</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="directions">
+    <a class="direction-panel" href="/development/">
+      <span>Разработка продукта</span>
+      <h2>От идеи до запуска</h2>
+      <p>
+        Помогаем пройти путь от первой версии до стабильного продукта: структура, интерфейс,
+        серверная часть, интеграции и развитие после релиза.
+      </p>
+    </a>
+    <a class="direction-panel dark" href="/ai-agents/">
+      <span>AI и автоматизация</span>
+      <h2>Меньше ручной работы</h2>
+      <p>
+        Настраиваем ботов, AI-помощников и связки сервисов, чтобы заявки, документы и повторяющиеся
+        задачи обрабатывались быстрее.
+      </p>
+    </a>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <p class="section-label">Услуги</p>
+      <h2>Что можно заказать</h2>
+      <p>
+        Основной фокус — решения, которые можно запустить, проверить на реальных пользователях
+        и спокойно развивать дальше.
+      </p>
+    </div>
+    <div class="service-grid">
+      {services.map((service) => <div class="service-item">{service}</div>)}
+    </div>
+  </section>
+
+  <section class="section faq-section" aria-labelledby="home-faq-title">
+    <div class="section-heading">
+      <div>
+        <p class="section-label">FAQ</p>
+        <h2 id="home-faq-title">Частые вопросы перед стартом</h2>
+      </div>
+      <p>
+        Коротко о формате работы, сроках, ТЗ, поддержке и первом шаге.
+        Если вопроса нет в списке, его можно оставить в форме заявки.
+      </p>
+    </div>
+    <div class="faq-list">
+      {homeFaq.map((item) => (
+        <details>
+          <summary>{item.question}</summary>
+          <p>{item.answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

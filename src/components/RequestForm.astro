@@ -1,0 +1,175 @@
+---
+import { contactMethods, requestServices } from '../data/site';
+
+const apiBaseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? '';
+---
+
+<form class="request-form" name="project-request" method="POST" data-api-url={`${apiBaseUrl}/api/v1/leads`}>
+  <input type="hidden" name="source_page" data-source-page value="/" />
+  <input type="hidden" name="utm_source" data-utm-source />
+  <input type="hidden" name="utm_medium" data-utm-medium />
+  <input type="hidden" name="utm_campaign" data-utm-campaign />
+  <p class="hidden-field">
+    <label>Company <input name="company" /></label>
+  </p>
+  <div class="form-head">
+    <h2>Оставить заявку</h2>
+    <p>Опишите задачу в свободной форме. Мы ответим, уточним детали и предложим следующий шаг.</p>
+  </div>
+  <label>
+    Имя
+    <input name="name" autocomplete="name" placeholder="Имя" required />
+  </label>
+  <label>
+    Куда ответить
+    <select name="contact_method" data-contact-method required>
+      {contactMethods.map((method) => <option value={method.value}>{method.label}</option>)}
+    </select>
+  </label>
+  <label data-contact-field>
+    <span data-contact-label>{contactMethods[0].fieldLabel}</span>
+    <input name="contact_value" data-contact-input placeholder={contactMethods[0].placeholder} required />
+  </label>
+  <label>
+    Что нужно сделать
+    <select name="service" data-service-select required>
+      <option value="">Выберите вариант</option>
+      {requestServices.map((service) => <option value={service}>{service}</option>)}
+    </select>
+  </label>
+  <label data-custom-service hidden>
+    Свой вариант услуги
+    <input name="custom_service" placeholder="Например: доработать существующий проект" />
+  </label>
+  <label>
+    Описание задачи
+    <textarea name="message" rows="5" placeholder="Что нужно сделать, для кого это, что уже есть сейчас" required></textarea>
+  </label>
+  <label>
+    Файл или материалы
+    <input name="brief_file" type="file" />
+  </label>
+  <label class="consent-check">
+    <input name="personal_data_consent" type="checkbox" value="true" required />
+    <span>
+      Я согласен(на) на обработку персональных данных и принимаю
+      <a href="/privacy/">политику конфиденциальности</a>.
+    </span>
+  </label>
+  <p class="form-status" data-form-status role="status" aria-live="polite"></p>
+  <button class="button primary" type="submit" data-submit-button>
+    <span data-submit-label>Отправить заявку</span>
+  </button>
+</form>
+
+<script>
+  const contactConfig = {
+    telegram: { label: 'Ваш Telegram', placeholder: '@username' },
+    instagram: { label: 'Ваш Instagram', placeholder: '@username' },
+    email: { label: 'Ваш email', placeholder: 'name@example.com' },
+    phone: { label: 'Ваш номер телефона', placeholder: '+375...' },
+    custom: { label: 'Как с вами связаться', placeholder: 'Удобный способ связи' }
+  };
+
+  document.querySelectorAll('.request-form').forEach((form) => {
+    const methodSelect = form.querySelector('[data-contact-method]');
+    const label = form.querySelector('[data-contact-label]');
+    const input = form.querySelector('[data-contact-input]');
+    const serviceSelect = form.querySelector('[data-service-select]');
+    const customService = form.querySelector('[data-custom-service]');
+    const customInput = customService?.querySelector('input');
+    const status = form.querySelector('[data-form-status]');
+    const submitButton = form.querySelector('[data-submit-button]');
+    const submitLabel = form.querySelector('[data-submit-label]');
+    const sourcePage = form.querySelector('[data-source-page]');
+
+    const setStatus = (message, type = '') => {
+      if (!status) return;
+      status.textContent = message;
+      status.dataset.type = type;
+    };
+
+    const setSubmitting = (isSubmitting) => {
+      form.setAttribute('aria-busy', String(isSubmitting));
+      if (submitButton) submitButton.disabled = isSubmitting;
+      if (submitLabel) submitLabel.textContent = isSubmitting ? 'Отправляем…' : 'Отправить заявку';
+    };
+
+    const syncContact = () => {
+      const value = methodSelect?.value || 'telegram';
+      const config = contactConfig[value] || contactConfig.telegram;
+      if (label) label.textContent = config.label;
+      if (input) input.placeholder = config.placeholder;
+    };
+
+    const syncService = () => {
+      const isCustom = serviceSelect?.value === 'Свой вариант';
+      if (customService) customService.hidden = !isCustom;
+      if (customInput) customInput.required = isCustom;
+    };
+
+    methodSelect?.addEventListener('change', syncContact);
+    serviceSelect?.addEventListener('change', syncService);
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const fileInput = form.querySelector('input[type="file"]');
+      const file = fileInput?.files?.[0];
+      if (file && file.size > 10 * 1024 * 1024) {
+        setStatus('Файл слишком большой. Максимальный размер — 10 МБ.', 'error');
+        fileInput.focus();
+        return;
+      }
+
+      const params = new URLSearchParams(window.location.search);
+      if (sourcePage) sourcePage.value = `${window.location.pathname}${window.location.search}`;
+      ['source', 'medium', 'campaign'].forEach((key) => {
+        const field = form.querySelector(`[data-utm-${key}]`);
+        if (field) field.value = params.get(`utm_${key}`) || '';
+      });
+
+      setStatus('');
+      setSubmitting(true);
+
+      try {
+        const response = await fetch(form.dataset.apiUrl, {
+          method: 'POST',
+          headers: { 'X-Request-Id': crypto.randomUUID() },
+          body: new FormData(form)
+        });
+        const payload = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(payload.detail || payload.title || 'Не удалось отправить заявку.');
+        }
+
+        form.reset();
+        syncContact();
+        syncService();
+        setStatus(payload.message || 'Заявка отправлена. Мы скоро свяжемся с вами.', 'success');
+      } catch (error) {
+        setStatus(
+          error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз.',
+          'error'
+        );
+      } finally {
+        setSubmitting(false);
+      }
+    });
+    if (window.location.hash === '#request') {
+      form.classList.add('is-highlighted');
+      window.setTimeout(() => form.classList.remove('is-highlighted'), 1200);
+    }
+    syncContact();
+    syncService();
+  });
+
+  window.addEventListener('hashchange', () => {
+    if (window.location.hash !== '#request') return;
+    document.querySelectorAll('.request-form').forEach((form) => {
+      form.classList.add('is-highlighted');
+      window.setTimeout(() => form.classList.remove('is-highlighted'), 1200);
+    });
+  });
+</script>

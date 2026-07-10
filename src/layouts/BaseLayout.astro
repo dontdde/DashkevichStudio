@@ -1,0 +1,130 @@
+---
+import { site } from '../data/site';
+import TelegramIcon from '../components/TelegramIcon.astro';
+import InstagramIcon from '../components/InstagramIcon.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import CookieNotice from '../components/CookieNotice.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  path?: string;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { title, description = site.description, path = '/', schema } = Astro.props;
+const canonical = new URL(path, site.url).toString();
+const pageTitle = title === site.name ? title : `${title} | ${site.name}`;
+---
+
+<!doctype html>
+<html lang="ru" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <script is:inline>
+      (() => {
+        try {
+          const theme = localStorage.getItem('dashkevich-theme');
+          document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+        } catch {
+          document.documentElement.dataset.theme = 'dark';
+        }
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content={site.name} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Перейти к содержанию</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Dashkevich Studio">
+        <span class="brand-mark">D</span>
+        <span>Dashkevich Studio</span>
+      </a>
+      <nav class="main-nav" aria-label="Основная навигация">
+        {site.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      </nav>
+      <div class="header-actions">
+        <ThemeToggle />
+        <div class="header-contacts" aria-label="Контакты">
+          <a class="phone-link" href={site.phoneHref}>{site.phoneLabel}</a>
+          <TelegramIcon />
+          <InstagramIcon />
+          <a class="email-link" href={`mailto:${site.email}`}>{site.email}</a>
+        </div>
+      </div>
+    </header>
+    <main id="content">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div>
+        <strong>{site.name}</strong>
+        <p>Проектирование, разработка и автоматизация цифровых продуктов.</p>
+      </div>
+      <div class="footer-links">
+        <TelegramIcon />
+        <InstagramIcon />
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <a href={site.phoneHref}>{site.phoneLabel}</a>
+      </div>
+      <nav class="legal-links" aria-label="Юридические документы">
+        <a href="/privacy/">Политика конфиденциальности</a>
+        <a href="/offer/">Публичная оферта</a>
+        <a href="/requisites/">Реквизиты</a>
+      </nav>
+    </footer>
+    <CookieNotice />
+    <script>
+      const syncThemeToggle = () => {
+        const isLight = document.documentElement.dataset.theme === 'light';
+        document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+          button.setAttribute('aria-pressed', String(isLight));
+          button.setAttribute('aria-label', isLight ? 'Переключить тёмную тему' : 'Переключить светлую тему');
+        });
+        document.querySelectorAll('[data-theme-toggle-text]').forEach((label) => {
+          label.textContent = isLight ? 'Светлая' : 'Тёмная';
+        });
+      };
+
+      document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const nextTheme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+          document.documentElement.dataset.theme = nextTheme;
+          try {
+            localStorage.setItem('dashkevich-theme', nextTheme);
+          } catch {}
+          syncThemeToggle();
+        });
+      });
+
+      syncThemeToggle();
+
+      document.querySelectorAll('a, button').forEach((element) => {
+        element.addEventListener('click', () => {
+          element.classList.remove('is-tapped');
+          window.requestAnimationFrame(() => {
+            element.classList.add('is-tapped');
+            window.setTimeout(() => element.classList.remove('is-tapped'), 420);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
