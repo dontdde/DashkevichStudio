@@ -6,7 +6,6 @@ dist
 .astro
 backend/**/bin
 backend/**/obj
-/data
 backups
 reports
 tmp
