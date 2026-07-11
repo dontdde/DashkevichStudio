@@ -18,7 +18,7 @@ public sealed class TelegramNotifier(
         EnsureConfigured();
         var text = BuildMessage(lead);
         var messageResponse = await httpClient.PostAsJsonAsync(
-            $"bot{_options.BotToken}/sendMessage",
+            BuildApiUri("sendMessage"),
             new { chat_id = _options.ChatId, text, parse_mode = "HTML" },
             cancellationToken);
 
@@ -36,7 +36,7 @@ public sealed class TelegramNotifier(
             };
 
             var documentResponse = await httpClient.PostAsync(
-                $"bot{_options.BotToken}/sendDocument",
+                BuildApiUri("sendDocument"),
                 content,
                 cancellationToken);
 
@@ -90,4 +90,7 @@ public sealed class TelegramNotifier(
         if (string.IsNullOrWhiteSpace(_options.BotToken) || string.IsNullOrWhiteSpace(_options.ChatId))
             throw new InvalidOperationException("Telegram BotToken and ChatId must be configured.");
     }
+
+    private Uri BuildApiUri(string method) =>
+        new($"https://api.telegram.org/bot{_options.BotToken}/{method}");
 }
