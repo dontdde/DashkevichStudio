@@ -1,0 +1,41 @@
+---
+import { commonCopy, languageNames, locales, localizedPathname, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  pathname: string;
+}
+
+const { locale, pathname } = Astro.props;
+const copy = commonCopy[locale];
+---
+
+<label class="language-switcher">
+  <span class="sr-only">{copy.language}</span>
+  <svg class="language-globe" aria-hidden="true" viewBox="0 0 24 24">
+    <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0c2.2-2.5 3.3-5.5 3.3-9S14.2 5.5 12 3m0 18c-2.2-2.5-3.3-5.5-3.3-9S9.8 5.5 12 3M3.5 9h17m-17 6h17" />
+  </svg>
+  <select data-language-select aria-label={copy.language}>
+    {locales.map((item) => (
+      <option value={localizedPathname(pathname, item)} selected={item === locale}>
+        {item.toUpperCase()} · {languageNames[item]}
+      </option>
+    ))}
+  </select>
+  <svg class="language-chevron" aria-hidden="true" viewBox="0 0 16 16">
+    <path d="m4 6 4 4 4-4" />
+  </svg>
+</label>
+
+<script>
+  document.querySelectorAll('[data-language-select]').forEach((select) => {
+    select.addEventListener('change', () => {
+      if (!(select instanceof HTMLSelectElement)) return;
+      try {
+        const firstSegment = select.value.split('/').filter(Boolean)[0];
+        localStorage.setItem('dashkevich-language', ['ru', 'pl'].includes(firstSegment) ? firstSegment : 'en');
+      } catch {}
+      window.location.assign(`${select.value}${window.location.search}${window.location.hash}`);
+    });
+  });
+</script>

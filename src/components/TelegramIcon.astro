@@ -4,12 +4,13 @@ import { site } from '../data/site';
 interface Props {
   className?: string;
   label?: string;
+  ariaLabel?: string;
 }
 
-const { className = '', label } = Astro.props;
+const { className = '', label, ariaLabel = 'Contact us on Telegram' } = Astro.props;
 ---
 
-<a class={`telegram-icon ${className}`} href={site.telegramUrl} aria-label="Связаться в Telegram">
+<a class={`telegram-icon ${className}`} href={site.telegramUrl} aria-label={ariaLabel}>
   <svg viewBox="0 0 24 24" aria-hidden="true">
     <path d="M21.9 4.2 18.7 19c-.2 1-.8 1.2-1.6.7l-4.6-3.4-2.2 2.1c-.2.2-.5.5-.9.5l.3-4.7 8.6-7.8c.4-.3-.1-.5-.6-.2L7.1 12.9l-4.6-1.4c-1-.3-1-1 .2-1.4L20.6 3.2c.8-.3 1.5.2 1.3 1Z" />
   </svg>

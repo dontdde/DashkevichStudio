@@ -16,21 +16,17 @@ public sealed class TelegramNotifier(
     public async Task SendAsync(Lead lead, CancellationToken cancellationToken)
     {
         EnsureConfigured();
-        var text = BuildMessage(lead);
-        var messageResponse = await httpClient.PostAsJsonAsync(
-            BuildApiUri("sendMessage"),
-            new { chat_id = _options.ChatId, text, parse_mode = "HTML" },
-            cancellationToken);
+        var attachmentPath = lead.Attachment is null
+            ? null
+            : fileStorage.GetPath(lead.Attachment.StoredName);
 
-        await EnsureSuccessAsync(messageResponse, cancellationToken);
-
-        if (lead.Attachment is not null && File.Exists(fileStorage.GetPath(lead.Attachment.StoredName)))
+        if (lead.Attachment is not null && File.Exists(attachmentPath))
         {
-            await using var file = File.OpenRead(fileStorage.GetPath(lead.Attachment.StoredName));
+            await using var file = File.OpenRead(attachmentPath);
             using var content = new MultipartFormDataContent
             {
                 { new StringContent(_options.ChatId), "chat_id" },
-                { new StringContent($"Файл к заявке {lead.Id}"), "caption" },
+                { new StringContent(BuildMessage(lead, compact: true)), "caption" },
                 { new StringContent("HTML"), "parse_mode" },
                 { new StreamContent(file), "document", lead.Attachment.OriginalName }
             };
@@ -41,27 +37,57 @@ public sealed class TelegramNotifier(
                 cancellationToken);
 
             await EnsureSuccessAsync(documentResponse, cancellationToken);
+            return;
         }
+
+        var messageResponse = await httpClient.PostAsJsonAsync(
+            BuildApiUri("sendMessage"),
+            new { chat_id = _options.ChatId, text = BuildMessage(lead), parse_mode = "HTML" },
+            cancellationToken);
+
+        await EnsureSuccessAsync(messageResponse, cancellationToken);
     }
 
-    private static string BuildMessage(Lead lead)
+    private static string BuildMessage(Lead lead, bool compact = false)
     {
         static string E(string? value) => WebUtility.HtmlEncode(value ?? "—");
-        var service = lead.Service == "Свой вариант" ? lead.CustomService : lead.Service;
+        var service = lead.Service is "custom" or "Свой вариант" ? lead.CustomService : ServiceLabel(lead.Service);
+        var description = compact ? Truncate(lead.Description, 360) : lead.Description;
+        var minskTime = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(lead.CreatedAtUtc, "Europe/Minsk");
 
         return $"""
-            <b>Новая заявка с сайта</b>
+            <b>Новая заявка</b>
 
-            <b>Имя:</b> {E(lead.Name)}
-            <b>Связь:</b> {E(ContactMethodLabel(lead.ContactMethod))} — {E(lead.ContactValue)}
-            <b>Услуга:</b> {E(service)}
+            <b>Имя:</b> {E(compact ? Truncate(lead.Name, 80) : lead.Name)}
+            <b>Связь:</b> {E(ContactMethodLabel(lead.ContactMethod))} — {E(compact ? Truncate(lead.ContactValue, 120) : lead.ContactValue)}
+            <b>Услуга:</b> {E(compact ? Truncate(service, 120) : service)}
             <b>Задача:</b>
-            {E(lead.Description)}
+            {E(description)}
 
-            <b>Страница:</b> {E(lead.SourcePage)}
-            <b>Создана:</b> {lead.CreatedAtUtc:dd.MM.yyyy HH:mm} UTC
-            <b>ID:</b> <code>{lead.Id}</code>
+            <b>Получена:</b> {minskTime:dd.MM.yyyy HH:mm} (Минск)
             """;
+    }
+
+    private static string ServiceLabel(string service) => service switch
+    {
+        "website" => "Сайт или лендинг",
+        "tilda-wordpress" => "Tilda / WordPress",
+        "store" => "Интернет-магазин",
+        "web-service" => "Веб-сервис / личный кабинет",
+        "telegram-bot" => "Telegram-бот",
+        "crm-automation" => "CRM или автоматизация",
+        "ai-agent" => "AI-агент / AI-помощник",
+        "integrations" => "Интеграции с сервисами",
+        _ => service
+    };
+
+    private static string Truncate(string? value, int maxLength)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return "—";
+
+        var trimmed = value.Trim();
+        return trimmed.Length <= maxLength ? trimmed : $"{trimmed[..(maxLength - 1)]}…";
     }
 
     private static string ContactMethodLabel(ContactMethod method) => method switch

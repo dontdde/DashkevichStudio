@@ -2,32 +2,42 @@
 import { site } from '../data/site';
 import InstagramIcon from './InstagramIcon.astro';
 import TelegramIcon from './TelegramIcon.astro';
+import { localePath, type Locale } from '../i18n';
 
 interface Props {
   title?: string;
   text?: string;
+  locale?: Locale;
 }
 
 const {
-  title = 'Готовы обсудить задачу?',
-  text = 'Перейдите к основной форме заявки на главной странице. Там можно выбрать удобный способ связи, услугу и приложить материалы.'
+  locale = 'en',
+  title,
+  text
 } = Astro.props;
+const copy = {
+  en: { title: 'Ready to discuss the task?', text: 'Use the main request form to choose a contact method, service and attach materials.', label: 'Request', request: 'Start a project', cases: 'View cases', contacts: 'Contacts', phone: 'Phone' },
+  ru: { title: 'Готовы обсудить задачу?', text: 'Перейдите к основной форме заявки на главной странице. Там можно выбрать способ связи, услугу и приложить материалы.', label: 'Заявка', request: 'Оставить заявку', cases: 'Посмотреть кейсы', contacts: 'Контакты', phone: 'Телефон' },
+  pl: { title: 'Gotowi omówić zadanie?', text: 'Skorzystaj z głównego formularza, wybierz sposób kontaktu, usługę i dołącz materiały.', label: 'Zapytanie', request: 'Rozpocznij projekt', cases: 'Zobacz realizacje', contacts: 'Kontakt', phone: 'Telefon' }
+}[locale];
+const resolvedTitle = title ?? copy.title;
+const resolvedText = text ?? copy.text;
 ---
 
 <section class="project-cta" aria-labelledby="project-cta-title">
   <div>
-    <p class="section-label">Заявка</p>
-    <h2 id="project-cta-title">{title}</h2>
-    <p>{text}</p>
+    <p class="section-label">{copy.label}</p>
+    <h2 id="project-cta-title">{resolvedTitle}</h2>
+    <p>{resolvedText}</p>
     <div class="cta-actions">
-      <a class="button primary" href="/#request">Оставить заявку</a>
-      <a class="button secondary" href="/cases/">Посмотреть кейсы</a>
+      <a class="button primary" href={`${localePath(locale, '/')}#request`}>{copy.request}</a>
+      <a class="button secondary" href={localePath(locale, '/cases/')}>{copy.cases}</a>
     </div>
   </div>
-  <div class="contact-stack" aria-label="Контакты">
+  <div class="contact-stack" aria-label={copy.contacts}>
     <div class="contact-rail">
       <a href={site.phoneHref}>
-        <span>Телефон</span>
+        <span>{copy.phone}</span>
         <strong>{site.phoneLabel}</strong>
       </a>
       <a href={`mailto:${site.email}`}>
@@ -40,8 +50,8 @@ const {
       </a>
     </div>
     <div class="contact-socials">
-      <TelegramIcon className="contact-social-icon" />
-      <InstagramIcon className="contact-social-icon" />
+      <TelegramIcon className="contact-social-icon" ariaLabel={locale === 'ru' ? 'Связаться в Telegram' : locale === 'pl' ? 'Napisz na Telegramie' : 'Contact us on Telegram'} />
+      <InstagramIcon className="contact-social-icon" ariaLabel={locale === 'ru' ? 'Перейти в Instagram' : locale === 'pl' ? 'Otwórz Instagram' : 'Open Instagram'} />
     </div>
   </div>
 </section>

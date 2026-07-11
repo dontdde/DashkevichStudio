@@ -4,6 +4,8 @@ import TelegramIcon from '../components/TelegramIcon.astro';
 import InstagramIcon from '../components/InstagramIcon.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import CookieNotice from '../components/CookieNotice.astro';
+import LanguageSwitcher from '../components/LanguageSwitcher.astro';
+import { commonCopy, localePath, type Locale } from '../i18n';
 import '../styles/global.css';
 
 interface Props {
@@ -11,15 +13,19 @@ interface Props {
   description?: string;
   path?: string;
   schema?: Record<string, unknown> | Record<string, unknown>[];
+  locale?: Locale;
 }
 
-const { title, description = site.description, path = '/', schema } = Astro.props;
+const { title, description = site.description, path = '/', schema, locale = 'en' } = Astro.props;
+const copy = commonCopy[locale];
 const canonical = new URL(path, site.url).toString();
 const pageTitle = title === site.name ? title : `${title} | ${site.name}`;
+const navPaths = ['/', '/development/', '/ai-agents/', '/cases/'];
+const routeWithoutLocale = path.replace(/^\/(ru|pl)(?=\/|$)/, '') || '/';
 ---
 
 <!doctype html>
-<html lang="ru" data-theme="dark">
+<html lang={locale} data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <script is:inline>
@@ -32,11 +38,16 @@ const pageTitle = title === site.name ? title : `${title} | ${site.name}`;
         }
       })();
     </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={new URL(localePath('en', routeWithoutLocale), site.url)} />
+    <link rel="alternate" hreflang="ru" href={new URL(localePath('ru', routeWithoutLocale), site.url)} />
+    <link rel="alternate" hreflang="pl" href={new URL(localePath('pl', routeWithoutLocale), site.url)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(localePath('en', routeWithoutLocale), site.url)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="robots" content="index,follow" />
     <meta name="author" content={site.name} />
@@ -51,21 +62,24 @@ const pageTitle = title === site.name ? title : `${title} | ${site.name}`;
     {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   </head>
   <body>
-    <a class="skip-link" href="#content">Перейти к содержанию</a>
+    <a class="skip-link" href="#content">{copy.skip}</a>
     <header class="site-header">
-      <a class="brand" href="/" aria-label="Dashkevich Studio">
+      <a class="brand" href={localePath(locale, '/')} aria-label="Dashkevich Studio">
         <span class="brand-mark">D</span>
         <span>Dashkevich Studio</span>
       </a>
-      <nav class="main-nav" aria-label="Основная навигация">
-        {site.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      <nav class="main-nav" aria-label={copy.navLabel}>
+        {navPaths.map((href, index) => <a href={localePath(locale, href)}>{copy.nav[index]}</a>)}
       </nav>
       <div class="header-actions">
-        <ThemeToggle />
-        <div class="header-contacts" aria-label="Контакты">
+        <div class="preference-controls">
+          <LanguageSwitcher locale={locale} pathname={Astro.url.pathname} />
+          <ThemeToggle locale={locale} />
+        </div>
+        <div class="header-contacts" aria-label={copy.contacts}>
           <a class="phone-link" href={site.phoneHref}>{site.phoneLabel}</a>
-          <TelegramIcon />
-          <InstagramIcon />
+          <TelegramIcon ariaLabel={copy.telegram} />
+          <InstagramIcon ariaLabel={copy.instagram} />
           <a class="email-link" href={`mailto:${site.email}`}>{site.email}</a>
         </div>
       </div>
@@ -76,30 +90,30 @@ const pageTitle = title === site.name ? title : `${title} | ${site.name}`;
     <footer class="site-footer">
       <div>
         <strong>{site.name}</strong>
-        <p>Проектирование, разработка и автоматизация цифровых продуктов.</p>
+        <p>{copy.footer}</p>
       </div>
       <div class="footer-links">
-        <TelegramIcon />
-        <InstagramIcon />
+        <TelegramIcon ariaLabel={copy.telegram} />
+        <InstagramIcon ariaLabel={copy.instagram} />
         <a href={`mailto:${site.email}`}>{site.email}</a>
         <a href={site.phoneHref}>{site.phoneLabel}</a>
       </div>
-      <nav class="legal-links" aria-label="Юридические документы">
-        <a href="/privacy/">Политика конфиденциальности</a>
-        <a href="/offer/">Публичная оферта</a>
-        <a href="/requisites/">Реквизиты</a>
+      <nav class="legal-links" aria-label={copy.legalLabel}>
+        <a href={localePath(locale, '/privacy/')}>{copy.privacy}</a>
+        <a href={localePath(locale, '/offer/')}>{copy.offer}</a>
+        <a href={localePath(locale, '/requisites/')}>{copy.requisites}</a>
       </nav>
     </footer>
-    <CookieNotice />
-    <script>
+    <CookieNotice locale={locale} />
+    <script define:vars={{ themeDark: copy.themeDark, themeLight: copy.themeLight, toDark: copy.toDark, toLight: copy.toLight }}>
       const syncThemeToggle = () => {
         const isLight = document.documentElement.dataset.theme === 'light';
         document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
           button.setAttribute('aria-pressed', String(isLight));
-          button.setAttribute('aria-label', isLight ? 'Переключить тёмную тему' : 'Переключить светлую тему');
+          button.setAttribute('aria-label', isLight ? toDark : toLight);
         });
         document.querySelectorAll('[data-theme-toggle-text]').forEach((label) => {
-          label.textContent = isLight ? 'Светлая' : 'Тёмная';
+          label.textContent = isLight ? themeLight : themeDark;
         });
       };
 

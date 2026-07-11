@@ -1,25 +1,7 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import { site } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';import {site} from '../data/site';import {localePath,type Locale} from '../i18n';
+interface Props{locale?:Locale} const{locale='en'}=Astro.props;
+const c={en:{title:'Company details',description:'Dashkevich Studio contact and legal details.',label:'Details',heading:'Company / sole proprietor details',note:'Complete this section with verified company information before final publication.',fields:['Name','Tax ID','Address','Email','Phone','Instagram']},ru:{title:'Реквизиты',description:'Реквизиты Dashkevich Studio для связи и юридической информации.',label:'Реквизиты',heading:'Реквизиты организации / ИП',note:'Заполните этот раздел реальными данными перед публикацией сайта.',fields:['Название','УНП / ИНН','Адрес','Email','Телефон','Instagram']},pl:{title:'Dane firmy',description:'Dane kontaktowe i prawne Dashkevich Studio.',label:'Dane',heading:'Dane firmy / jednoosobowej działalności',note:'Przed finalną publikacją uzupełnij tę sekcję zweryfikowanymi danymi firmy.',fields:['Nazwa','NIP','Adres','Email','Telefon','Instagram']}}[locale];
+const values=['Dashkevich Studio / [company]','[to be completed]','[to be completed]',site.email,site.phoneLabel,site.instagramLabel];
 ---
-
-<BaseLayout
-  title="Реквизиты"
-  description="Реквизиты Dashkevich Studio для связи и юридической информации."
-  path="/requisites/"
->
-  <section class="legal-page">
-    <p class="section-label">Реквизиты</p>
-    <h1>Реквизиты организации / ИП</h1>
-    <p class="legal-note">Заполните этот раздел реальными данными перед публикацией сайта.</p>
-
-    <div class="requisites-list">
-      <div><span>Название</span><strong>Dashkevich Studio / [ИП или организация]</strong></div>
-      <div><span>УНП / ИНН</span><strong>[указать]</strong></div>
-      <div><span>Адрес</span><strong>[указать]</strong></div>
-      <div><span>Email</span><strong><a href={`mailto:${site.email}`}>{site.email}</a></strong></div>
-      <div><span>Телефон</span><strong><a href={site.phoneHref}>{site.phoneLabel}</a></strong></div>
-      <div><span>Instagram</span><strong><a href={site.instagramUrl}>{site.instagramLabel}</a></strong></div>
-    </div>
-  </section>
-</BaseLayout>
+<BaseLayout title={c.title} description={c.description} path={localePath(locale,'/requisites/')} locale={locale}><section class="legal-page"><p class="section-label">{c.label}</p><h1>{c.heading}</h1><p class="legal-note">{c.note}</p><div class="requisites-list">{c.fields.map((field,index)=><div><span>{field}</span><strong>{index===3?<a href={`mailto:${site.email}`}>{values[index]}</a>:index===4?<a href={site.phoneHref}>{values[index]}</a>:index===5?<a href={site.instagramUrl}>{values[index]}</a>:values[index]}</strong></div>)}</div></section></BaseLayout>

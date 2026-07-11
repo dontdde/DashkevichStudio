@@ -1,23 +1,6 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import CaseGrid from '../components/CaseGrid.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';import CaseGrid from '../components/CaseGrid.astro';import {localePath,type Locale} from '../i18n';
+interface Props{locale?:Locale} const{locale='en'}=Astro.props;
+const copy={en:{title:'Cases',description:'Dashkevich Studio cases: digital products, AI automation, internal tools, Telegram bots and integrations.',label:'Cases',hero:'Dashkevich Studio cases',text:'Public projects with the business task, solution, visual logic, technical details and result.'},ru:{title:'Кейсы',description:'Кейсы Dashkevich Studio: разработка продуктов, AI-автоматизация, внутренние инструменты, Telegram-боты и интеграции.',label:'Кейсы',hero:'Кейсы Dashkevich Studio',text:'Реальные проекты, которые можно показать публично: задача, решение, визуальная логика, технические детали и результат.'},pl:{title:'Realizacje',description:'Realizacje Dashkevich Studio: produkty cyfrowe, automatyzacja AI, narzędzia wewnętrzne, boty Telegram i integracje.',label:'Realizacje',hero:'Realizacje Dashkevich Studio',text:'Publiczne projekty pokazujące zadanie biznesowe, rozwiązanie, logikę wizualną, szczegóły techniczne i rezultat.'}}[locale];
 ---
-
-<BaseLayout
-  title="Кейсы"
-  description="Кейсы Dashkevich Studio: разработка продуктов, AI-автоматизация, внутренние инструменты, Telegram-боты и интеграции."
-  path="/cases/"
->
-  <section class="page-hero">
-    <p class="section-label">Cases</p>
-    <h1>Кейсы Dashkevich Studio</h1>
-    <p>
-      Реальные проекты, которые можно показать публично: задача, решение,
-      визуальная логика, технические детали и результат.
-    </p>
-  </section>
-
-  <section class="section">
-    <CaseGrid />
-  </section>
-</BaseLayout>
+<BaseLayout title={copy.title} description={copy.description} path={localePath(locale,'/cases/')} locale={locale}><section class="page-hero"><p class="section-label">{copy.label}</p><h1>{copy.hero}</h1><p>{copy.text}</p></section><section class="section"><CaseGrid locale={locale}/></section></BaseLayout>

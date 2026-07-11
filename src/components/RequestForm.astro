@@ -1,7 +1,13 @@
 ---
-import { contactMethods, requestServices } from '../data/site';
+import { commonCopy, localePath, type Locale } from '../i18n';
+
+interface Props { locale?: Locale; }
+const { locale = 'en' } = Astro.props;
+const copy = commonCopy[locale];
 
 const apiBaseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? '';
+const contactValues = ['telegram', 'instagram', 'email', 'phone', 'custom'];
+const serviceValues = ['website', 'tilda-wordpress', 'store', 'web-service', 'telegram-bot', 'crm-automation', 'ai-agent', 'integrations', 'custom'];
 ---
 
 <form class="request-form" name="project-request" method="POST" data-api-url={`${apiBaseUrl}/api/v1/leads`}>
@@ -13,63 +19,61 @@ const apiBaseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? '';
     <label>Company <input name="company" /></label>
   </p>
   <div class="form-head">
-    <h2>Оставить заявку</h2>
-    <p>Опишите задачу в свободной форме. Мы ответим, уточним детали и предложим следующий шаг.</p>
+    <h2>{copy.formTitle}</h2>
+    <p>{copy.formIntro}</p>
   </div>
   <label>
-    Имя
-    <input name="name" autocomplete="name" placeholder="Имя" required />
+    {copy.name}
+    <input name="name" autocomplete="name" placeholder={copy.namePlaceholder} maxlength="100" required />
   </label>
   <label>
-    Куда ответить
+    {copy.replyVia}
     <select name="contact_method" data-contact-method required>
-      {contactMethods.map((method) => <option value={method.value}>{method.label}</option>)}
+      {contactValues.map((value, index) => <option value={value}>{copy.contactOptions[index]}</option>)}
     </select>
   </label>
   <label data-contact-field>
-    <span data-contact-label>{contactMethods[0].fieldLabel}</span>
-    <input name="contact_value" data-contact-input placeholder={contactMethods[0].placeholder} required />
+    <span data-contact-label>{copy.contactLabels[0]}</span>
+    <input name="contact_value" data-contact-input placeholder={copy.contactPlaceholders[0]} maxlength="200" required />
   </label>
   <label>
-    Что нужно сделать
+    {copy.service}
     <select name="service" data-service-select required>
-      <option value="">Выберите вариант</option>
-      {requestServices.map((service) => <option value={service}>{service}</option>)}
+      <option value="">{copy.choose}</option>
+      {serviceValues.map((value, index) => <option value={value}>{copy.serviceOptions[index]}</option>)}
     </select>
   </label>
   <label data-custom-service hidden>
-    Свой вариант услуги
-    <input name="custom_service" placeholder="Например: доработать существующий проект" />
+    {copy.customService}
+    <input name="custom_service" placeholder={copy.customServicePlaceholder} maxlength="200" />
   </label>
   <label>
-    Описание задачи
-    <textarea name="message" rows="5" placeholder="Что нужно сделать, для кого это, что уже есть сейчас" required></textarea>
+    {copy.description}
+    <textarea name="message" rows="5" placeholder={copy.descriptionPlaceholder} maxlength="3000" required></textarea>
   </label>
   <label>
-    Файл или материалы
-    <input name="brief_file" type="file" />
+    {copy.file}
+    <input name="brief_file" type="file" accept=".pdf,.doc,.docx,.txt,.rtf,.png,.jpg,.jpeg,.webp,.zip" />
   </label>
   <label class="consent-check">
     <input name="personal_data_consent" type="checkbox" value="true" required />
     <span>
-      Я согласен(на) на обработку персональных данных и принимаю
-      <a href="/privacy/">политику конфиденциальности</a>.
+      {copy.consentBefore}
+      <a href={localePath(locale, '/privacy/')}>{copy.consentLink}</a>.
     </span>
   </label>
   <p class="form-status" data-form-status role="status" aria-live="polite"></p>
   <button class="button primary" type="submit" data-submit-button>
-    <span data-submit-label>Отправить заявку</span>
+    <span data-submit-label>{copy.submit}</span>
   </button>
 </form>
 
-<script>
-  const contactConfig = {
-    telegram: { label: 'Ваш Telegram', placeholder: '@username' },
-    instagram: { label: 'Ваш Instagram', placeholder: '@username' },
-    email: { label: 'Ваш email', placeholder: 'name@example.com' },
-    phone: { label: 'Ваш номер телефона', placeholder: '+375...' },
-    custom: { label: 'Как с вами связаться', placeholder: 'Удобный способ связи' }
-  };
+<script define:vars={{ contactLabels: copy.contactLabels, contactPlaceholders: copy.contactPlaceholders, submitting: copy.submitting, submit: copy.submit, fileTooLarge: copy.fileTooLarge, sendError: copy.sendError, sendSuccess: copy.sendSuccess }}>
+  const contactKeys = ['telegram', 'instagram', 'email', 'phone', 'custom'];
+  const contactConfig = Object.fromEntries(contactKeys.map((key, index) => [key, {
+    label: contactLabels[index],
+    placeholder: contactPlaceholders[index]
+  }]));
 
   document.querySelectorAll('.request-form').forEach((form) => {
     const methodSelect = form.querySelector('[data-contact-method]');
@@ -92,7 +96,7 @@ const apiBaseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? '';
     const setSubmitting = (isSubmitting) => {
       form.setAttribute('aria-busy', String(isSubmitting));
       if (submitButton) submitButton.disabled = isSubmitting;
-      if (submitLabel) submitLabel.textContent = isSubmitting ? 'Отправляем…' : 'Отправить заявку';
+      if (submitLabel) submitLabel.textContent = isSubmitting ? submitting : submit;
     };
 
     const syncContact = () => {
@@ -103,7 +107,7 @@ const apiBaseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? '';
     };
 
     const syncService = () => {
-      const isCustom = serviceSelect?.value === 'Свой вариант';
+      const isCustom = serviceSelect?.value === 'custom';
       if (customService) customService.hidden = !isCustom;
       if (customInput) customInput.required = isCustom;
     };
@@ -117,7 +121,7 @@ const apiBaseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? '';
       const fileInput = form.querySelector('input[type="file"]');
       const file = fileInput?.files?.[0];
       if (file && file.size > 10 * 1024 * 1024) {
-        setStatus('Файл слишком большой. Максимальный размер — 10 МБ.', 'error');
+        setStatus(fileTooLarge, 'error');
         fileInput.focus();
         return;
       }
@@ -133,24 +137,25 @@ const apiBaseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? '';
       setSubmitting(true);
 
       try {
+        const requestId = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`;
         const response = await fetch(form.dataset.apiUrl, {
           method: 'POST',
-          headers: { 'X-Request-Id': crypto.randomUUID() },
+          headers: { 'X-Request-Id': requestId },
           body: new FormData(form)
         });
         const payload = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-          throw new Error(payload.detail || payload.title || 'Не удалось отправить заявку.');
+          throw new Error(payload.detail || payload.title || sendError);
         }
 
         form.reset();
         syncContact();
         syncService();
-        setStatus(payload.message || 'Заявка отправлена. Мы скоро свяжемся с вами.', 'success');
+        setStatus(sendSuccess, 'success');
       } catch (error) {
         setStatus(
-          error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз.',
+          error instanceof Error ? error.message : sendError,
           'error'
         );
       } finally {

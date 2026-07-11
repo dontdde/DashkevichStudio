@@ -2,105 +2,20 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CaseGrid from '../components/CaseGrid.astro';
 import ProjectCta from '../components/ProjectCta.astro';
+import { localePath, type Locale } from '../i18n';
+interface Props { locale?: Locale; }
+const { locale='en' }=Astro.props;
+const copy={
+  en:{title:'Digital product development',description:'End-to-end development of landing pages, Tilda and WordPress websites, online stores, web services and automation.',label:'End-to-end development',hero:'We design and launch websites, stores and web services around real business goals',lead:'A landing page, online store, customer portal, bot or MVP should do more than look finished. It should generate leads, accept payments, accelerate work or open a new sales channel.',scopeTitle:'We own the complete delivery path',scopeText:'From structure and interface to backend, databases, integrations, deployment and support. The first release contains exactly what is needed for a confident launch.',stack:['Landing page','Tilda','WordPress','Online store','Customer portal','Backend','Database','Telegram bot','Online payments','CRM','Automation'],demandLabel:'Common tasks',demandTitle:'What clients ask us to improve',demandText:'Most requests are specific: lead generation, catalogues, payments, mobile adaptation, migration or improvements to an existing product.',demand:[['Tilda / WordPress','Pages, menus, blocks, forms, SEO metadata, mobile fixes or migration.'],['Lead-generating landing page','A focused page, conversion path, lead form and clear calls to action.'],['Store and catalogue','Product cards, filters, cart, online payments, enquiries and practical content management.'],['Calculations and integrations','Calculators, APIs, CRM, Telegram alerts, spreadsheets and automation of manual work.']],process:[['1. Understand the task','Define the goal, audience, constraints and smallest feature set that produces a measurable result.'],['2. Build the first version','Design the interface, implement logic and connect data, alerts, payments, CRM or other services.'],['3. Launch and improve','Publish, test core scenarios, fix weak points and evolve the product from real feedback.']],caseLabel:'Relevant case',caseTitle:'A real product close to this direction',ctaTitle:'Describe the product you want to launch',ctaText:'Use the short request form on the home page. We will review the inputs and suggest a practical first stage.'},
+  ru:{title:'Разработка цифровых продуктов',description:'Разработка лендингов, сайтов, Tilda и WordPress-доработок, интернет-магазинов, веб-сервисов и автоматизации под ключ.',label:'Разработка под ключ',hero:'Проектируем и запускаем сайты, магазины и веб-сервисы под реальные задачи бизнеса',lead:'Лендинг, Tilda или WordPress-сайт, интернет-магазин, личный кабинет, бот или MVP должны не просто выглядеть готовыми, а привлекать заявки, принимать оплату, ускорять процессы или открывать новый канал продаж.',scopeTitle:'Берём на себя весь основной контур',scopeText:'Помогаем пройти путь от структуры и интерфейса до серверной части, базы данных, интеграций, деплоя и поддержки. На старте оставляем только то, что нужно для уверенного запуска.',stack:['Лендинг','Tilda','WordPress','Интернет-магазин','Личный кабинет','Backend','База данных','Telegram-бот','Онлайн-оплата','CRM','Автоматизация'],demandLabel:'Частые задачи',demandTitle:'С чем чаще всего приходят',demandText:'Самые частые запросы — конкретные улучшения: заявки, каталог, оплата, мобильная версия, перенос или доработка готового сайта.',demand:[['Tilda / WordPress','Доработать страницы, меню, блоки, формы, SEO-мета, мобильную версию или перенести сайт.'],['Лендинг для заявок','Собрать продающую страницу, форму сбора лидов, структуру блоков и понятные CTA.'],['Магазин и каталог','Карточки товаров, фильтры, корзина, онлайн-оплата, заявки и управление контентом.'],['Расчёты и интеграции','Калькуляторы, API, CRM, Telegram-уведомления, таблицы и автоматизация ручных операций.']],process:[['1. Понять задачу','Определяем цель, аудиторию, ограничения и минимальный набор функций с проверяемым результатом.'],['2. Собрать первую версию','Проектируем интерфейс, собираем логику, подключаем данные, уведомления, оплаты, CRM и нужные сервисы.'],['3. Запустить и улучшать','Публикуем продукт, проверяем сценарии, закрываем слабые места и развиваем проект по обратной связи.']],caseLabel:'Релевантный кейс',caseTitle:'Реальный продукт, близкий к этому направлению',ctaTitle:'Опишите продукт, который нужно запустить',ctaText:'На главной есть короткая форма заявки. Мы посмотрим вводные, уточним детали и предложим первый этап разработки.'},
+  pl:{title:'Tworzenie produktów cyfrowych',description:'Kompleksowe tworzenie landing page, stron Tilda i WordPress, sklepów internetowych, serwisów webowych i automatyzacji.',label:'Kompleksowa realizacja',hero:'Projektujemy i wdrażamy strony, sklepy i serwisy webowe wokół realnych celów biznesowych',lead:'Landing page, sklep, panel klienta, bot lub MVP powinny nie tylko wyglądać na gotowe. Mają pozyskiwać leady, przyjmować płatności, przyspieszać procesy lub otwierać nowy kanał sprzedaży.',scopeTitle:'Bierzemy odpowiedzialność za cały proces',scopeText:'Od struktury i interfejsu po backend, bazy danych, integracje, wdrożenie i wsparcie. Pierwsza wersja zawiera dokładnie to, czego potrzeba do pewnego startu.',stack:['Landing page','Tilda','WordPress','Sklep internetowy','Panel klienta','Backend','Baza danych','Bot Telegram','Płatności online','CRM','Automatyzacja'],demandLabel:'Częste zadania',demandTitle:'Co klienci chcą najczęściej poprawić',demandText:'Najwięcej zapytań dotyczy konkretnych usprawnień: leadów, katalogu, płatności, mobile, migracji lub rozbudowy istniejącej strony.',demand:[['Tilda / WordPress','Podstrony, menu, sekcje, formularze, meta SEO, poprawki mobilne lub migracja.'],['Landing page pod leady','Skupiona strona, ścieżka konwersji, formularz i czytelne CTA.'],['Sklep i katalog','Karty produktów, filtry, koszyk, płatności, zapytania i wygodne zarządzanie treścią.'],['Obliczenia i integracje','Kalkulatory, API, CRM, alerty Telegram, arkusze i automatyzacja pracy ręcznej.']],process:[['1. Zrozumieć zadanie','Ustalamy cel, odbiorców, ograniczenia i minimalny zakres dający mierzalny efekt.'],['2. Zbudować pierwszą wersję','Projektujemy interfejs, logikę i łączymy dane, płatności, CRM oraz inne usługi.'],['3. Wdrożyć i ulepszać','Publikujemy, testujemy kluczowe scenariusze i rozwijamy produkt na podstawie opinii.']],caseLabel:'Powiązana realizacja',caseTitle:'Prawdziwy produkt bliski temu kierunkowi',ctaTitle:'Opisz produkt, który chcesz uruchomić',ctaText:'Skorzystaj z krótkiego formularza na stronie głównej. Przeanalizujemy materiały i zaproponujemy praktyczny pierwszy etap.'}
+}[locale];
 ---
-
-<BaseLayout
-  title="Разработка цифровых продуктов"
-  description="Разработка лендингов, сайтов, Tilda и WordPress-доработок, интернет-магазинов, веб-сервисов и автоматизации под ключ."
-  path="/development/"
->
-  <section class="page-hero">
-    <p class="section-label">Разработка под ключ</p>
-    <h1>Проектируем и запускаем сайты, магазины и веб-сервисы под реальные задачи бизнеса</h1>
-    <p>
-      Лендинг, Tilda или WordPress-сайт, интернет-магазин, личный кабинет, бот или MVP должны
-      не просто выглядеть готовыми, а решать конкретную задачу: привлекать заявки, принимать оплату,
-      ускорять процессы или открывать новый канал продаж.
-    </p>
-  </section>
-
-  <section class="section split-section">
-    <div>
-      <h2>Берём на себя весь основной контур</h2>
-      <p>
-        Помогаем пройти путь от структуры и интерфейса до серверной части, базы данных,
-        интеграций, деплоя и последующей поддержки. На старте оставляем только то, что нужно
-        для уверенного запуска.
-      </p>
-    </div>
-    <div class="stack-list">
-      <span>Лендинг</span>
-      <span>Tilda</span>
-      <span>WordPress</span>
-      <span>Интернет-магазин</span>
-      <span>Личный кабинет</span>
-      <span>Серверная часть</span>
-      <span>База данных</span>
-      <span>Telegram-бот</span>
-      <span>Онлайн-оплата</span>
-      <span>CRM</span>
-      <span>Автоматизация</span>
-    </div>
-  </section>
-
-  <section class="section demand-section" aria-labelledby="development-demand-title">
-    <div class="section-heading">
-      <div>
-        <p class="section-label">Частые задачи</p>
-        <h2 id="development-demand-title">С чем чаще всего приходят</h2>
-      </div>
-      <p>
-        Самые частые запросы — не абстрактная разработка, а конкретные улучшения:
-        заявки, каталог, оплата, мобильная версия, перенос или доработка готового сайта.
-      </p>
-    </div>
-    <div class="demand-grid compact">
-      <article class="demand-item">
-        <h3>Tilda / WordPress</h3>
-        <p>Доработать страницы, меню, блоки, формы, SEO-мета, мобильную версию или перенести сайт.</p>
-      </article>
-      <article class="demand-item">
-        <h3>Лендинг для заявок</h3>
-        <p>Собрать продающую страницу, форму сбора лидов, структуру блоков и понятные CTA.</p>
-      </article>
-      <article class="demand-item">
-        <h3>Магазин и каталог</h3>
-        <p>Карточки товаров, фильтры, корзина, онлайн-оплата, заявки и простое управление контентом.</p>
-      </article>
-      <article class="demand-item">
-        <h3>Расчёты и интеграции</h3>
-        <p>Калькуляторы, API, CRM, Telegram-уведомления, таблицы и автоматизация ручных операций.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="process-list">
-      <article>
-        <h3>1. Понять задачу</h3>
-        <p>Определяем цель, аудиторию, ограничения и минимальный набор функций, который даст бизнесу проверяемый результат.</p>
-      </article>
-      <article>
-        <h3>2. Собрать первую версию</h3>
-        <p>Проектируем интерфейс, собираем логику, подключаем данные, уведомления, оплаты, CRM или другие нужные сервисы.</p>
-      </article>
-      <article>
-        <h3>3. Запустить и улучшать</h3>
-        <p>Публикуем продукт, проверяем сценарии, закрываем слабые места и развиваем проект по реальной обратной связи.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-heading">
-      <p class="section-label">Релевантные кейсы</p>
-      <h2>Примеры задач, которые близки к этому направлению</h2>
-    </div>
-    <CaseGrid compact />
-  </section>
-
-  <ProjectCta
-    title="Заполните короткую заявку на главной"
-    text="Расскажите, какой продукт нужно запустить. Мы посмотрим вводные, уточним детали и предложим первый этап разработки."
-  />
+<BaseLayout title={copy.title} description={copy.description} path={localePath(locale,'/development/')} locale={locale}>
+<section class="page-hero"><p class="section-label">{copy.label}</p><h1>{copy.hero}</h1><p>{copy.lead}</p></section>
+<section class="section split-section"><div><h2>{copy.scopeTitle}</h2><p>{copy.scopeText}</p></div><div class="stack-list">{copy.stack.map(item=><span>{item}</span>)}</div></section>
+<section class="section demand-section"><div class="section-heading"><div><p class="section-label">{copy.demandLabel}</p><h2>{copy.demandTitle}</h2></div><p>{copy.demandText}</p></div><div class="demand-grid compact">{copy.demand.map(([title,text])=><article class="demand-item"><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+<section class="section"><div class="process-list">{copy.process.map(([title,text])=><article><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+<section class="section"><div class="section-heading"><p class="section-label">{copy.caseLabel}</p><h2>{copy.caseTitle}</h2></div><CaseGrid compact locale={locale}/></section>
+<ProjectCta locale={locale} title={copy.ctaTitle} text={copy.ctaText}/>
 </BaseLayout>

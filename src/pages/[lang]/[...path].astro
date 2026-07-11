@@ -1,0 +1,36 @@
+---
+import HomePage from '../index.astro';
+import DevelopmentPage from '../development.astro';
+import AiAgentsPage from '../ai-agents.astro';
+import CasesPage from '../cases.astro';
+import PrivacyPage from '../privacy.astro';
+import OfferPage from '../offer.astro';
+import RequisitesPage from '../requisites.astro';
+import type { Locale } from '../../i18n';
+
+const pages = {
+  '': HomePage,
+  development: DevelopmentPage,
+  'ai-agents': AiAgentsPage,
+  cases: CasesPage,
+  privacy: PrivacyPage,
+  offer: OfferPage,
+  requisites: RequisitesPage
+};
+
+export function getStaticPaths() {
+  const routes = ['', 'development', 'ai-agents', 'cases', 'privacy', 'offer', 'requisites'];
+  return (['ru', 'pl'] as const).flatMap((locale) =>
+    routes.map((path) => ({
+      params: { lang: locale, path: path || undefined },
+      props: { locale, page: path }
+    }))
+  );
+}
+
+interface Props { locale: Locale; page: keyof typeof pages; }
+const { locale, page } = Astro.props;
+const Page = pages[page];
+---
+
+<Page locale={locale} />

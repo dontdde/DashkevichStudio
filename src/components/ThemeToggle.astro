@@ -1,4 +1,12 @@
-<button class="theme-toggle" type="button" data-theme-toggle aria-label="Переключить светлую тему" aria-pressed="false">
+---
+import { commonCopy, type Locale } from '../i18n';
+
+interface Props { locale?: Locale; }
+const { locale = 'en' } = Astro.props;
+const copy = commonCopy[locale];
+---
+
+<button class="theme-toggle" type="button" data-theme-toggle aria-label={copy.toLight} aria-pressed="false">
   <span class="theme-toggle-track" aria-hidden="true">
     <span class="theme-toggle-thumb"></span>
     <svg class="theme-icon moon-icon" viewBox="0 0 24 24">
@@ -8,5 +16,5 @@
       <path d="M12 5.2a1 1 0 0 0 1-1V2.8a1 1 0 1 0-2 0v1.4a1 1 0 0 0 1 1Zm0 13.6a1 1 0 0 0-1 1v1.4a1 1 0 1 0 2 0v-1.4a1 1 0 0 0-1-1ZM5.2 12a1 1 0 0 0-1-1H2.8a1 1 0 1 0 0 2h1.4a1 1 0 0 0 1-1Zm16 0a1 1 0 0 0-1-1h-1.4a1 1 0 1 0 0 2h1.4a1 1 0 0 0 1-1ZM6.5 7.9a1 1 0 0 0 .7-1.7l-1-1a1 1 0 0 0-1.4 1.4l1 1a1 1 0 0 0 .7.3Zm11 8.2a1 1 0 0 0-.7 1.7l1 1a1 1 0 0 0 1.4-1.4l-1-1a1 1 0 0 0-.7-.3Zm-12 2.9a1 1 0 0 0 .7-.3l1-1a1 1 0 0 0-1.4-1.4l-1 1A1 1 0 0 0 5.5 19Zm12-11.1a1 1 0 0 0 .7-.3l1-1a1 1 0 1 0-1.4-1.4l-1 1a1 1 0 0 0 .7 1.7ZM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" />
     </svg>
   </span>
-  <span class="theme-toggle-text" data-theme-toggle-text>Тёмная</span>
+  <span class="theme-toggle-text" data-theme-toggle-text>{copy.themeDark}</span>
 </button>

@@ -1,12 +1,16 @@
 ---
+import { commonCopy, localePath, type Locale } from '../i18n';
+
+interface Props { locale?: Locale; }
+const { locale = 'en' } = Astro.props;
+const copy = commonCopy[locale];
 ---
 
 <div class="cookie-notice" data-cookie-notice>
   <p>
-    Мы можем использовать cookie и аналитику, чтобы улучшать сайт. Продолжая пользоваться сайтом,
-    вы соглашаетесь с <a href="/privacy/">политикой конфиденциальности</a>.
+    {copy.cookieBefore} <a href={localePath(locale, '/privacy/')}>{copy.consentLink}</a>.
   </p>
-  <button type="button" data-cookie-accept>Понятно</button>
+  <button type="button" data-cookie-accept>{copy.cookieAccept}</button>
 </div>
 
 <script>

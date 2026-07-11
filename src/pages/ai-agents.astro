@@ -1,126 +1,16 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ProjectCta from '../components/ProjectCta.astro';
-
-const aiFaq = [
-  {
-    question: 'Что такое AI-агент простыми словами?',
-    answer:
-      'Это помощник, который получает входные данные, принимает решение по правилам или базе знаний и запускает действие: ответ, уведомление, запись в CRM или задачу команде.'
-  },
-  {
-    question: 'С чего лучше начинать внедрение AI?',
-    answer:
-      'С одного процесса: обработка заявок, ответы на типовые вопросы, поиск по документам, резюме переписок, уведомления или подготовка черновиков.'
-  },
-  {
-    question: 'Можно подключить AI к Telegram, CRM или таблицам?',
-    answer:
-      'Да. Типовой сценарий — бот или сервис принимает сообщение, анализирует его, сохраняет данные и отправляет результат в Telegram, CRM, таблицу или внутренний инструмент.'
-  },
-  {
-    question: 'AI заменит сотрудников?',
-    answer:
-      'Чаще задача не в замене, а в снятии рутины: собрать вводные, классифицировать заявку, подготовить черновик ответа и передать человеку уже структурированную информацию.'
-  },
-  {
-    question: 'Можно сначала проверить идею без большого бюджета?',
-    answer:
-      'Да. Лучше собрать небольшой прототип на одном сценарии, проверить пользу, а потом расширять автоматизацию на другие процессы.'
-  }
-];
-
-const schema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: aiFaq.map((item) => ({
-    '@type': 'Question',
-    name: item.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: item.answer
-    }
-  }))
-};
+import BaseLayout from '../layouts/BaseLayout.astro';import ProjectCta from '../components/ProjectCta.astro';import {localePath,type Locale} from '../i18n';
+interface Props{locale?:Locale} const{locale='en'}=Astro.props;
+const copy={
+en:{title:'AI agents and automation',description:'AI agents and workflow automation for requests, documents, Telegram, CRM, APIs and internal tools.',label:'AI agents and automation',hero:'We introduce AI where it speeds up the team and reduces manual work',lead:'An AI agent can process incoming requests, search documents, draft answers, update CRM and trigger actions in Telegram or an internal service.',scopeTitle:'From one assistant to a connected workflow',scopeText:'Start with one clear scenario: a request, document, conversation, knowledge base or alert. Once the value is proven, the automation can expand.',steps:[['Input','Request, document, message, spreadsheet or API event.'],['Reasoning','Classification, clarification, knowledge search and tool selection.'],['Action','Client reply, CRM task, Telegram notification or data update.']],scenarios:'Scenarios',effect:'Where AI agents create value quickly',services:['Initial request qualification','AI assistant for internal documents','Telegram bot with LLM and tools','Conversation and call summaries','Draft proposals and client replies','Agent workflows for CRM processes'],faqTitle:'What to understand before introducing AI',faqText:'AI is not useful everywhere. We first choose one scenario where automation really saves time or helps process requests faster.',faq:[['What is an AI agent in simple terms?','An assistant that receives information, makes a decision using rules or a knowledge base and triggers an action.'],['Where should AI implementation start?','With one process: requests, common questions, document search, conversation summaries, alerts or drafts.'],['Can AI connect to Telegram, CRM or spreadsheets?','Yes. A typical workflow receives a message, analyses it, stores data and sends the result to another system.'],['Will AI replace employees?','Usually the goal is to remove routine work and give a person structured information for the final decision.'],['Can we test the idea on a small budget?','Yes. A focused prototype for one scenario is the best way to prove value before expanding.']],ctaTitle:'Describe the process you want to automate',ctaText:'Use the main request form, select AI automation and briefly describe the current workflow.'},
+ru:{title:'AI-агенты и автоматизация',description:'Внедрение AI-агентов и автоматизации в рабочие процессы: заявки, документы, Telegram, CRM, API и внутренние инструменты.',label:'AI-агенты и автоматизация',hero:'Внедряем AI туда, где он ускоряет работу команды и снижает ручную нагрузку',lead:'AI-агент может разбирать входящие заявки, искать информацию в документах, готовить ответы, обновлять CRM и запускать действия в Telegram или внутреннем сервисе.',scopeTitle:'От простого помощника до связки нескольких процессов',scopeText:'Начинать лучше с одного понятного сценария: заявка, документ, переписка, база знаний или уведомление. Когда польза подтверждена, автоматизацию можно расширять.',steps:[['Input','Заявка, документ, сообщение, таблица или API-событие.'],['Reasoning','Классификация, уточнения, поиск по базе знаний, выбор инструмента.'],['Action','Ответ клиенту, задача в CRM, Telegram-уведомление или обновление данных.']],scenarios:'Сценарии',effect:'Где AI-агенты дают быстрый эффект',services:['Первичная обработка заявок','AI-помощник по внутренним документам','Telegram-бот с LLM и инструментами','Резюме переписок и звонков','Подготовка КП и ответов клиентам','Агентные цепочки для CRM-процессов'],faqTitle:'Что важно понять про AI-агентов',faqText:'AI полезен не везде. Сначала выбираем понятный сценарий, где автоматизация реально экономит время или помогает быстрее обрабатывать заявки.',faq:[['Что такое AI-агент простыми словами?','Это помощник, который получает входные данные, принимает решение по правилам или базе знаний и запускает действие.'],['С чего лучше начинать внедрение AI?','С одного процесса: обработка заявок, ответы на типовые вопросы, поиск по документам, резюме переписок или подготовка черновиков.'],['Можно подключить AI к Telegram, CRM или таблицам?','Да. Сервис принимает сообщение, анализирует его, сохраняет данные и отправляет результат в нужную систему.'],['AI заменит сотрудников?','Чаще задача не в замене, а в снятии рутины и передаче человеку уже структурированной информации.'],['Можно сначала проверить идею без большого бюджета?','Да. Лучше собрать небольшой прототип на одном сценарии, проверить пользу, а потом расширять.']],ctaTitle:'Опишите процесс, который хотите автоматизировать',ctaText:'На главной есть единая форма заявки: выберите AI-автоматизацию и коротко опишите сценарий.'},
+pl:{title:'Agenci AI i automatyzacja',description:'Agenci AI i automatyzacja procesów dla zapytań, dokumentów, Telegram, CRM, API i narzędzi wewnętrznych.',label:'Agenci AI i automatyzacja',hero:'Wdrażamy AI tam, gdzie przyspiesza zespół i ogranicza pracę ręczną',lead:'Agent AI może analizować zapytania, przeszukiwać dokumenty, tworzyć odpowiedzi, aktualizować CRM i uruchamiać działania w Telegramie lub narzędziu wewnętrznym.',scopeTitle:'Od jednego asystenta do połączonego procesu',scopeText:'Zaczynamy od jednego jasnego scenariusza: zapytania, dokumentu, rozmowy, bazy wiedzy lub powiadomienia. Po potwierdzeniu wartości automatyzację można rozszerzać.',steps:[['Input','Zapytanie, dokument, wiadomość, arkusz lub zdarzenie API.'],['Reasoning','Klasyfikacja, doprecyzowanie, wyszukiwanie wiedzy i wybór narzędzia.'],['Action','Odpowiedź klientowi, zadanie w CRM, alert Telegram lub aktualizacja danych.']],scenarios:'Scenariusze',effect:'Gdzie agenci AI szybko tworzą wartość',services:['Wstępna kwalifikacja zapytań','Asystent AI dla dokumentów wewnętrznych','Bot Telegram z LLM i narzędziami','Podsumowania rozmów i połączeń','Szkice ofert i odpowiedzi klientom','Procesy agentowe dla CRM'],faqTitle:'Co warto wiedzieć przed wdrożeniem AI',faqText:'AI nie przydaje się wszędzie. Najpierw wybieramy scenariusz, w którym automatyzacja naprawdę oszczędza czas.',faq:[['Czym jest agent AI w prostych słowach?','To asystent, który odbiera dane, podejmuje decyzję na podstawie zasad lub wiedzy i uruchamia działanie.'],['Od czego zacząć wdrażanie AI?','Od jednego procesu: zapytań, typowych pytań, wyszukiwania dokumentów, podsumowań lub szkiców.'],['Czy AI można połączyć z Telegramem, CRM lub arkuszami?','Tak. Typowy proces odbiera wiadomość, analizuje ją, zapisuje dane i przekazuje wynik do innego systemu.'],['Czy AI zastąpi pracowników?','Zwykle celem jest usunięcie rutyny i przekazanie człowiekowi uporządkowanych informacji.'],['Czy pomysł można sprawdzić małym kosztem?','Tak. Skupiony prototyp jednego scenariusza najlepiej potwierdza wartość przed rozbudową.']],ctaTitle:'Opisz proces, który chcesz zautomatyzować',ctaText:'Skorzystaj z formularza na stronie głównej, wybierz automatyzację AI i krótko opisz obecny proces.'}
+}[locale]; const schema={'@context':'https://schema.org','@type':'FAQPage',mainEntity:copy.faq.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))};
 ---
-
-<BaseLayout
-  title="AI-агенты и автоматизация"
-  description="Внедрение AI-агентов и автоматизации в рабочие процессы: заявки, документы, Telegram, CRM, API и внутренние инструменты."
-  path="/ai-agents/"
-  schema={schema}
->
-  <section class="page-hero ai-hero">
-    <p class="section-label">AI-агенты и автоматизация</p>
-    <h1>Внедряем AI туда, где он ускоряет работу команды и снижает ручную нагрузку</h1>
-    <p>
-      AI-агент может разбирать входящие заявки, искать информацию в документах,
-      готовить ответы, обновлять CRM и запускать действия в Telegram или внутреннем сервисе.
-    </p>
-  </section>
-
-  <section class="section split-section">
-    <div>
-      <h2>От простого помощника до связки нескольких процессов</h2>
-      <p>
-        Начинать лучше с одного понятного сценария: заявка, документ, переписка,
-        база знаний или уведомление. Когда польза подтверждена, автоматизацию можно расширять.
-      </p>
-    </div>
-    <div class="ai-steps">
-      <article>
-        <span>Input</span>
-        <p>Заявка, документ, сообщение, таблица или API-событие.</p>
-      </article>
-      <article>
-        <span>Reasoning</span>
-        <p>Классификация, уточнения, поиск по базе знаний, выбор инструмента.</p>
-      </article>
-      <article>
-        <span>Action</span>
-        <p>Ответ клиенту, задача в CRM, Telegram-уведомление или обновление данных.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-heading">
-      <p class="section-label">Сценарии</p>
-      <h2>Где AI-агенты дают быстрый эффект</h2>
-    </div>
-    <div class="service-grid">
-      <div class="service-item">Первичная обработка заявок</div>
-      <div class="service-item">AI-помощник по внутренним документам</div>
-      <div class="service-item">Telegram-бот с LLM и инструментами</div>
-      <div class="service-item">Резюме переписок и звонков</div>
-      <div class="service-item">Подготовка КП и ответов клиентам</div>
-      <div class="service-item">Агентные цепочки для CRM-процессов</div>
-    </div>
-  </section>
-
-  <section class="section faq-section" aria-labelledby="ai-faq-title">
-    <div class="section-heading">
-      <div>
-        <p class="section-label">FAQ</p>
-        <h2 id="ai-faq-title">Что важно понять про AI-агентов</h2>
-      </div>
-      <p>
-        AI полезен не везде. Сначала выбираем понятный сценарий, где автоматизация
-        реально экономит время или помогает быстрее обрабатывать заявки.
-      </p>
-    </div>
-    <div class="faq-list">
-      {aiFaq.map((item) => (
-        <details>
-          <summary>{item.question}</summary>
-          <p>{item.answer}</p>
-        </details>
-      ))}
-    </div>
-  </section>
-
-  <ProjectCta
-    title="Опишите процесс, который хотите автоматизировать"
-    text="На главной есть единая форма заявки: выберите AI-автоматизацию, оставьте контакт и коротко опишите сценарий."
-  />
+<BaseLayout title={copy.title} description={copy.description} path={localePath(locale,'/ai-agents/')} locale={locale} schema={schema}>
+<section class="page-hero ai-hero"><p class="section-label">{copy.label}</p><h1>{copy.hero}</h1><p>{copy.lead}</p></section>
+<section class="section split-section"><div><h2>{copy.scopeTitle}</h2><p>{copy.scopeText}</p></div><div class="ai-steps">{copy.steps.map(([title,text])=><article><span>{title}</span><p>{text}</p></article>)}</div></section>
+<section class="section"><div class="section-heading"><p class="section-label">{copy.scenarios}</p><h2>{copy.effect}</h2></div><div class="service-grid">{copy.services.map(item=><div class="service-item">{item}</div>)}</div></section>
+<section class="section faq-section"><div class="section-heading"><div><p class="section-label">FAQ</p><h2>{copy.faqTitle}</h2></div><p>{copy.faqText}</p></div><div class="faq-list">{copy.faq.map(([q,a])=><details><summary>{q}</summary><p>{a}</p></details>)}</div></section>
+<ProjectCta locale={locale} title={copy.ctaTitle} text={copy.ctaText}/>
 </BaseLayout>
