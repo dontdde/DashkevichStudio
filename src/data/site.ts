@@ -6,8 +6,8 @@ export const site = {
   phoneHref: 'tel:+375256832542',
   telegramLabel: '@dashkevich_studio',
   telegramUrl: 'https://t.me/dashkevich_studio',
-  instagramLabel: '@dashkevich_studio',
-  instagramUrl: 'https://www.instagram.com/dashkevich_studio/',
+  instagramLabel: '@dashkevich__studio',
+  instagramUrl: 'https://www.instagram.com/dashkevich__studio/',
   description:
     'Dashkevich Studio проектирует и запускает сайты, лендинги, интернет-магазины, WordPress/Tilda-доработки, автоматизацию и AI-инструменты для бизнеса.',
   nav: [
