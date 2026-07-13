@@ -1,4 +1,8 @@
-dashkevichstudio.by, www.dashkevichstudio.by {
+www.dashkevichstudio.by {
+    redir https://dashkevichstudio.by{uri} permanent
+}
+
+dashkevichstudio.by {
     encode zstd gzip
 
     @backend path /api/* /health

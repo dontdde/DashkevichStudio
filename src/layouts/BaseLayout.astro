@@ -14,14 +14,68 @@ interface Props {
   path?: string;
   schema?: Record<string, unknown> | Record<string, unknown>[];
   locale?: Locale;
+  robots?: string;
 }
 
-const { title, description = site.description, path = '/', schema, locale = 'en' } = Astro.props;
+const { title, description = site.description, path = '/', schema, locale = 'en', robots = 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' } = Astro.props;
 const copy = commonCopy[locale];
 const canonical = new URL(path, site.url).toString();
-const pageTitle = title === site.name ? title : `${title} | ${site.name}`;
+const pageTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
 const navPaths = ['/', '/development/', '/ai-agents/', '/cases/'];
 const routeWithoutLocale = path.replace(/^\/(ru|pl)(?=\/|$)/, '') || '/';
+const ogLocale = { en: 'en_US', ru: 'ru_BY', pl: 'pl_PL' }[locale];
+const alternateOgLocales = Object.values({ en: 'en_US', ru: 'ru_BY', pl: 'pl_PL' }).filter((value) => value !== ogLocale);
+const pageSchemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+const breadcrumbName = { en: 'Home', ru: 'Главная', pl: 'Strona główna' }[locale];
+const breadcrumbSchema = path === localePath(locale, '/') ? [] : [{
+  '@type': 'BreadcrumbList',
+  '@id': `${canonical}#breadcrumb`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: breadcrumbName, item: new URL(localePath(locale, '/'), site.url).toString() },
+    { '@type': 'ListItem', position: 2, name: title, item: canonical }
+  ]
+}];
+const schemaGraph = [
+  {
+    '@type': 'Organization',
+    '@id': `${site.url}/#organization`,
+    name: site.name,
+    legalName: site.legalName,
+    alternateName: site.alternateNames,
+    url: site.url,
+    logo: { '@type': 'ImageObject', url: new URL('/logo-512.png', site.url).toString(), width: 512, height: 512 },
+    email: site.email,
+    telephone: site.phoneLabel,
+    taxID: site.taxId,
+    sameAs: [site.telegramUrl, site.instagramUrl],
+    founder: { '@type': 'Person', name: site.legalName }
+  },
+  {
+    '@type': 'WebSite',
+    '@id': `${site.url}/#website`,
+    name: site.name,
+    alternateName: site.alternateNames,
+    url: site.url,
+    inLanguage: ['en', 'ru', 'pl'],
+    publisher: { '@id': `${site.url}/#organization` }
+  },
+  {
+    '@type': 'WebPage',
+    '@id': `${canonical}#webpage`,
+    name: pageTitle,
+    description,
+    url: canonical,
+    inLanguage: locale,
+    isPartOf: { '@id': `${site.url}/#website` },
+    about: { '@id': `${site.url}/#organization` }
+  },
+  ...breadcrumbSchema,
+  ...pageSchemas.map((entry) => {
+    const { ['@context']: _context, ...value } = entry;
+    return value;
+  })
+];
+const structuredData = { '@context': 'https://schema.org', '@graph': schemaGraph };
 ---
 
 <!doctype html>
@@ -49,17 +103,25 @@ const routeWithoutLocale = path.replace(/^\/(ru|pl)(?=\/|$)/, '') || '/';
     <link rel="alternate" hreflang="pl" href={new URL(localePath('pl', routeWithoutLocale), site.url)} />
     <link rel="alternate" hreflang="x-default" href={new URL(localePath('en', routeWithoutLocale), site.url)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="robots" content="index,follow" />
+    <link rel="apple-touch-icon" href="/logo-512.png" />
+    <meta name="robots" content={robots} />
     <meta name="author" content={site.name} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={ogLocale} />
+    {alternateOgLocales.map((value) => <meta property="og:locale:alternate" content={value} />)}
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:image" content={new URL('/logo-512.png', site.url)} />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="Dashkevich Studio" />
+    <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
-    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+    <meta name="twitter:image" content={new URL('/logo-512.png', site.url)} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body>
     <a class="skip-link" href="#content">{copy.skip}</a>

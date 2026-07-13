@@ -1,5 +1,8 @@
 export const site = {
   name: 'Dashkevich Studio',
+  legalName: 'Дашкевич Илья Валерьевич',
+  taxId: 'AE5184647',
+  alternateNames: ['Дашкевич Студио', 'Дашкевич Студия', 'DashkevichStudio'],
   url: 'https://dashkevichstudio.by',
   email: 'hello@dashkevichstudio.by',
   phoneLabel: '+375 25 683 25 42',
@@ -9,7 +12,7 @@ export const site = {
   instagramLabel: '@dashkevich__studio',
   instagramUrl: 'https://www.instagram.com/dashkevich__studio/',
   description:
-    'Dashkevich Studio проектирует и запускает сайты, лендинги, интернет-магазины, WordPress/Tilda-доработки, автоматизацию и AI-инструменты для бизнеса.',
+    'Dashkevich Studio — студия разработки сайтов, веб-сервисов и AI-решений. Создаём frontend, backend, Telegram-ботов, интеграции и автоматизацию.',
   nav: [
     { href: '/', label: 'Главная' },
     { href: '/development/', label: 'Разработка' },

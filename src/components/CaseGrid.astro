@@ -12,12 +12,22 @@ const copy = {
   ru: { category:'Спортивный клуб',direction:'Сайт под ключ',title:'Сайт KITTENNIS.BY для теннисного клуба',summary:'Создали новую версию сайта клуба интересного тенниса в Минске: первый экран, КИТ Дивизион, результаты матчей, архив сезонов, турниры, партнёры и контакты.',result:'Клуб получил современный сайт с выразительной спортивной подачей, мобильной адаптацией, светлой и тёмной темой и более лёгкими изображениями.',highlights:['Светлая и тёмная тема','КИТ Дивизион и архив сезонов','Последние результаты матчей','Мобильное бургер-меню','Оптимизация изображений'],details:[['Задача','Собрать новую визуальную и техническую версию сайта клуба, сохранив узнаваемость KIT Love to Win и важные разделы для участников.'],['Что сделали','Спроектировали главный экран, результаты, таблицы Дивизиона, архив сезонов, турниры, устав, партнёров и контакты.'],['Дизайн','Концепция построена вокруг теннисного корта, мяча, ракетки и клубной спортивной эстетики.'],['Техника','Лёгкий статический сайт на HTML, CSS и JavaScript с оптимизированными изображениями.']],gallery:['Светлая тема: первый экран, навигация, заявка в Дивизион и быстрые результаты.','Тёмная тема: тот же сценарий с вечерней спортивной атмосферой.','Раздел результатов: матчи, счёт и быстрый переход к деталям.'],galleryLabel:'Экраны проекта KITTENNIS.BY',open:'Открыть кейс KITTENNIS.BY',tags:'Что сделано',upcoming:['Новый проект в работе','Следующий кейс готовится']},
   pl: { category:'Klub sportowy',direction:'Kompleksowa strona',title:'Strona KITTENNIS.BY dla klubu tenisowego',summary:'Nowa strona klubu z mocnym ekranem głównym, KIT Division, wynikami meczów, archiwum sezonów, turniejami, partnerami i kontaktem.',result:'Klub otrzymał nowoczesną stronę mobilną z jasnym i ciemnym motywem oraz zoptymalizowanymi obrazami.',highlights:['Jasny i ciemny motyw','KIT Division i archiwum sezonów','Najnowsze wyniki meczów','Nawigacja mobilna','Optymalizacja obrazów'],details:[['Cel','Stworzyć nową wizualną i techniczną wersję strony, zachowując rozpoznawalność KIT Love to Win i ważne sekcje dla członków.'],['Co zrobiliśmy','Zaprojektowaliśmy stronę główną, wyniki, tabele Division, archiwum sezonów, turnieje, regulamin, partnerów i kontakt.'],['Design','System wizualny łączy kort, piłkę, rakietę i energiczną sportową tożsamość klubu.'],['Technologia','Lekka statyczna strona HTML, CSS i JavaScript ze zoptymalizowanymi obrazami.']],gallery:['Jasny motyw: strona główna, nawigacja, wejście do Division i wyniki.','Ciemny motyw: ten sam scenariusz w wieczornej atmosferze.','Sekcja wyników: mecze, wynik i szybki dostęp do szczegółów.'],galleryLabel:'Ekrany projektu KITTENNIS.BY',open:'Otwórz realizację KITTENNIS.BY',tags:'Co zrobiliśmy',upcoming:['Nowy projekt w realizacji','Kolejna realizacja jest przygotowywana']}
 }[locale];
+const previewAlt = {
+  en: 'Responsive KITTENNIS.BY tennis club website on desktop and mobile',
+  ru: 'Адаптивный сайт теннисного клуба KITTENNIS.BY на компьютере и телефоне',
+  pl: 'Responsywna strona klubu tenisowego KITTENNIS.BY na komputerze i telefonie'
+}[locale];
+const galleryAlts = {
+  en: ['KITTENNIS.BY homepage in light theme', 'KITTENNIS.BY homepage in dark theme', 'KITTENNIS.BY match results page'],
+  ru: ['Главная страница KITTENNIS.BY в светлой теме', 'Главная страница KITTENNIS.BY в тёмной теме', 'Страница результатов матчей KITTENNIS.BY'],
+  pl: ['Strona główna KITTENNIS.BY w jasnym motywie', 'Strona główna KITTENNIS.BY w ciemnym motywie', 'Strona wyników meczów KITTENNIS.BY']
+}[locale];
 ---
 
 <div class={`case-grid ${compact ? 'case-grid-compact' : ''}`}>
   <article class="case-card case-card-featured" id="kittennis">
       <a class="case-visual tennis-case-visual" href={`${localePath(locale, '/cases/')}#kittennis`} aria-label={copy.open}>
-        <img src="/cases/kittennis/home-light-full.png" alt="" loading="lazy" />
+        <img src="/cases/kittennis/home-light-full.jpg" alt={previewAlt} width="1440" height="1100" loading={compact ? 'lazy' : 'eager'} fetchpriority={compact ? 'auto' : 'high'} />
         <div class="case-device">
           <img src="/cases/kittennis/home-light-mobile-full.png" alt="" loading="lazy" />
         </div>
@@ -44,15 +54,15 @@ const copy = {
             </div>
             <div class="case-gallery" aria-label={copy.galleryLabel}>
               <figure class="case-shot case-shot-wide">
-                <img src="/cases/kittennis/home-light-full.png" alt="Полный первый экран сайта KITTENNIS.BY в светлой теме" loading="eager" />
+                <img src="/cases/kittennis/home-light-full.jpg" alt={galleryAlts[0]} width="1440" height="1100" loading="lazy" />
                 <figcaption>{copy.gallery[0]}</figcaption>
               </figure>
               <figure class="case-shot">
-                <img src="/cases/kittennis/home-dark-full.png" alt="Полный первый экран сайта KITTENNIS.BY в тёмной теме" loading="eager" />
+                <img src="/cases/kittennis/home-dark-full.jpg" alt={galleryAlts[1]} width="1440" height="1100" loading="lazy" />
                 <figcaption>{copy.gallery[1]}</figcaption>
               </figure>
               <figure class="case-shot">
-                <img src="/cases/kittennis/results-light-full.png" alt="Полный экран раздела результатов матчей на сайте KITTENNIS.BY" loading="eager" />
+                <img src="/cases/kittennis/results-light-full.jpg" alt={galleryAlts[2]} width="1440" height="1100" loading="lazy" />
                 <figcaption>{copy.gallery[2]}</figcaption>
               </figure>
             </div>
