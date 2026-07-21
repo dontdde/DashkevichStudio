@@ -21,7 +21,7 @@ export const commonCopy = {
   en: {
     skip: 'Skip to content',
     navLabel: 'Main navigation',
-    nav: ['Home', 'Development', 'AI agents', 'Cases'],
+    nav: ['Home', 'Web Development', 'Business Automation', 'Cases'],
     contacts: 'Contacts',
     footer: 'Product design, development and business automation.',
     legalLabel: 'Legal documents',
@@ -63,7 +63,7 @@ export const commonCopy = {
     cookieAccept: 'Got it'
   },
   ru: {
-    skip: 'Перейти к содержанию', navLabel: 'Основная навигация', nav: ['Главная', 'Разработка', 'AI-агенты', 'Кейсы'], contacts: 'Контакты',
+    skip: 'Перейти к содержанию', navLabel: 'Основная навигация', nav: ['Главная', 'Веб-разработка', 'Автоматизация бизнеса', 'Кейсы'], contacts: 'Контакты',
     footer: 'Проектирование, разработка и автоматизация цифровых продуктов.', legalLabel: 'Юридические документы', privacy: 'Политика конфиденциальности', offer: 'Публичная оферта', requisites: 'Реквизиты', language: 'Язык',
     telegram: 'Связаться в Telegram', instagram: 'Перейти в Instagram',
     themeDark: 'Тёмная', themeLight: 'Светлая', toDark: 'Переключить тёмную тему', toLight: 'Переключить светлую тему', requestLabel: 'Заявка', submit: 'Отправить заявку', submitting: 'Отправляем...',
@@ -73,7 +73,7 @@ export const commonCopy = {
     description: 'Описание задачи', descriptionPlaceholder: 'Что нужно сделать, для кого это, что уже есть сейчас', file: 'Файл или материалы', consentBefore: 'Я согласен(на) на обработку персональных данных и принимаю', consentLink: 'политику конфиденциальности', fileTooLarge: 'Файл слишком большой. Максимальный размер — 10 МБ.', sendError: 'Не удалось отправить заявку. Попробуйте ещё раз.', sendSuccess: 'Заявка отправлена. Мы скоро свяжемся с вами.', cookieBefore: 'Мы можем использовать cookie и аналитику, чтобы улучшать сайт. Продолжая пользоваться сайтом, вы соглашаетесь с', cookieAccept: 'Понятно'
   },
   pl: {
-    skip: 'Przejdź do treści', navLabel: 'Główna nawigacja', nav: ['Strona główna', 'Realizacja', 'Agenci AI', 'Realizacje'], contacts: 'Kontakt',
+    skip: 'Przejdź do treści', navLabel: 'Główna nawigacja', nav: ['Strona główna', 'Tworzenie stron', 'Automatyzacja biznesu', 'Realizacje'], contacts: 'Kontakt',
     footer: 'Projektowanie, tworzenie i automatyzacja produktów cyfrowych.', legalLabel: 'Dokumenty prawne', privacy: 'Polityka prywatności', offer: 'Oferta publiczna', requisites: 'Dane firmy', language: 'Język',
     telegram: 'Napisz na Telegramie', instagram: 'Otwórz Instagram',
     themeDark: 'Ciemny', themeLight: 'Jasny', toDark: 'Włącz ciemny motyw', toLight: 'Włącz jasny motyw', requestLabel: 'Zapytanie', submit: 'Wyślij zapytanie', submitting: 'Wysyłanie...',

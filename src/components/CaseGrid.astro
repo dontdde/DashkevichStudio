@@ -4,77 +4,378 @@ import { localePath, type Locale } from '../i18n';
 interface Props {
   compact?: boolean;
   locale?: Locale;
+  caseIds?: string[];
 }
 
-const { compact = false, locale = 'en' } = Astro.props;
+interface CaseImage {
+  src: string;
+  avif?: string;
+}
+
+const { compact = false, locale = 'en', caseIds = ['kittennis'] } = Astro.props;
+
+const imageSets: Record<string, CaseImage[]> = {
+  salon: [
+    ['01-cover', '01-cover'],
+    ['02-home-and-portfolio', '02-home-and-portfolio'],
+    ['03-services-and-prices', '03-services-and-prices'],
+    ['04-available-times', '04-available-times'],
+    ['05-reminders-and-repeat-booking', '05-reminders-and-repeat-booking'],
+    ['06-mobile-booking', '06-mobile-booking']
+  ].map(([png, avif]) => ({ src: `/cases/salon/${png}.png`, avif: `/cases/salon/${avif}.avif` })),
+  assistant: [
+    ['01-cover', '01-cover'],
+    ['02-client-dialog', '02-client-dialog'],
+    ['03-client-request-summary', '03-client-request-summary'],
+    ['04-meeting-scheduling', '04-meeting-scheduling'],
+    ['05-manager-handoff', '05-manager-handoff'],
+    ['06-sales-pipeline', '06-sales-pipeline']
+  ].map(([png, avif]) => ({ src: `/cases/ai-assistant/${png}.png`, avif: `/cases/ai-assistant/${avif}.avif` })),
+  recruitment: [
+    ['01-cover', '01-cover'],
+    ['02-all-sources', '02-all-sources'],
+    ['03-ai-filtering', '03-ai-filtering'],
+    ['04-telegram-candidate', '04-telegram-candidate'],
+    ['05-ai-dialogue', '05-ai-dialogue'],
+    ['06-manager-handoff', '06-manager-handoff']
+  ].map(([png, avif]) => ({ src: `/cases/recruitment/${png}.png`, avif: `/cases/recruitment/${avif}.avif` })),
+  kittennis: [
+    { src: '/cases/kittennis/home-light-full.jpg' },
+    { src: '/cases/kittennis/home-dark-full.jpg' },
+    { src: '/cases/kittennis/results-light-full.jpg' }
+  ]
+};
+
 const copy = {
-  en: { category:'Sports club',direction:'End-to-end website',title:'KITTENNIS.BY website for a tennis club',summary:'A new club website with a strong homepage, KIT Division, match results, season archive, tournaments, partners and contacts.',result:'The club received a modern, mobile-friendly website with light and dark themes and optimized imagery.',highlights:['Light and dark theme','KIT Division and season archive','Latest match results','Mobile navigation','Optimized imagery'],details:[['Goal','Create a new visual and technical website while preserving the KIT Love to Win identity and the sections members use most.'],['What we built','Homepage, latest results, Division tables, season archive, tournaments, rules, partners and contacts.'],['Design','The visual system combines the tennis court, ball, racket and the club’s energetic sporting identity.'],['Technology','A lightweight static website built with HTML, CSS and JavaScript, with compressed image assets.']],gallery:['Light theme: homepage, navigation, Division entry point and recent results.','Dark theme: the same journey with an evening sports atmosphere.','Results section: matches, score and quick access to details.'],galleryLabel:'KITTENNIS.BY project screens',open:'Open KITTENNIS.BY case',tags:'What we built',upcoming:['New project in progress','Next case is being prepared']},
-  ru: { category:'Спортивный клуб',direction:'Сайт под ключ',title:'Сайт KITTENNIS.BY для теннисного клуба',summary:'Создали новую версию сайта клуба интересного тенниса в Минске: первый экран, КИТ Дивизион, результаты матчей, архив сезонов, турниры, партнёры и контакты.',result:'Клуб получил современный сайт с выразительной спортивной подачей, мобильной адаптацией, светлой и тёмной темой и более лёгкими изображениями.',highlights:['Светлая и тёмная тема','КИТ Дивизион и архив сезонов','Последние результаты матчей','Мобильное бургер-меню','Оптимизация изображений'],details:[['Задача','Собрать новую визуальную и техническую версию сайта клуба, сохранив узнаваемость KIT Love to Win и важные разделы для участников.'],['Что сделали','Спроектировали главный экран, результаты, таблицы Дивизиона, архив сезонов, турниры, устав, партнёров и контакты.'],['Дизайн','Концепция построена вокруг теннисного корта, мяча, ракетки и клубной спортивной эстетики.'],['Техника','Лёгкий статический сайт на HTML, CSS и JavaScript с оптимизированными изображениями.']],gallery:['Светлая тема: первый экран, навигация, заявка в Дивизион и быстрые результаты.','Тёмная тема: тот же сценарий с вечерней спортивной атмосферой.','Раздел результатов: матчи, счёт и быстрый переход к деталям.'],galleryLabel:'Экраны проекта KITTENNIS.BY',open:'Открыть кейс KITTENNIS.BY',tags:'Что сделано',upcoming:['Новый проект в работе','Следующий кейс готовится']},
-  pl: { category:'Klub sportowy',direction:'Kompleksowa strona',title:'Strona KITTENNIS.BY dla klubu tenisowego',summary:'Nowa strona klubu z mocnym ekranem głównym, KIT Division, wynikami meczów, archiwum sezonów, turniejami, partnerami i kontaktem.',result:'Klub otrzymał nowoczesną stronę mobilną z jasnym i ciemnym motywem oraz zoptymalizowanymi obrazami.',highlights:['Jasny i ciemny motyw','KIT Division i archiwum sezonów','Najnowsze wyniki meczów','Nawigacja mobilna','Optymalizacja obrazów'],details:[['Cel','Stworzyć nową wizualną i techniczną wersję strony, zachowując rozpoznawalność KIT Love to Win i ważne sekcje dla członków.'],['Co zrobiliśmy','Zaprojektowaliśmy stronę główną, wyniki, tabele Division, archiwum sezonów, turnieje, regulamin, partnerów i kontakt.'],['Design','System wizualny łączy kort, piłkę, rakietę i energiczną sportową tożsamość klubu.'],['Technologia','Lekka statyczna strona HTML, CSS i JavaScript ze zoptymalizowanymi obrazami.']],gallery:['Jasny motyw: strona główna, nawigacja, wejście do Division i wyniki.','Ciemny motyw: ten sam scenariusz w wieczornej atmosferze.','Sekcja wyników: mecze, wynik i szybki dostęp do szczegółów.'],galleryLabel:'Ekrany projektu KITTENNIS.BY',open:'Otwórz realizację KITTENNIS.BY',tags:'Co zrobiliśmy',upcoming:['Nowy projekt w realizacji','Kolejna realizacja jest przygotowywana']}
+  en: {
+    open: 'Open case', close: 'Close case', gallery: 'Project screens', details: 'Project details',
+    upcoming: ['New project in progress', 'Next case is being prepared'],
+    cases: [
+      {
+        id: 'salon-booking', number: '01', status: 'Product concept', category: 'Beauty / online booking',
+        title: 'VELA Beauty: booking without calls',
+        summary: 'A client sees services, prices, specialists and available slots, then books from a phone in about a minute.',
+        metrics: ['~1 minute to book', '24/7 online booking', 'up to 40% less manual work'],
+        details: [
+          ['Task', 'Remove the friction between discovering a salon and confirming a visit: no calls, waiting for replies or hidden prices.'],
+          ['What we designed', 'Service and price selection, specialist profiles, a live calendar, client area, reminders, repeat booking and the full mobile journey.'],
+          ['Design', 'A calm editorial beauty system with large photography, warm neutral surfaces and clear booking states.'],
+          ['Product logic', 'The concept covers the complete customer journey and the operational states a salon needs to keep prices and slots current.']
+        ],
+        captions: ['Case cover and business value', 'Homepage with services and portfolio', 'Services, prices and booking summary', 'Specialists and available slots', 'Reminders and repeat booking', 'Complete mobile booking journey']
+      },
+      {
+        id: 'ai-assistant', number: '02', status: 'Product concept', category: 'AI / customer operations',
+        title: 'MIRA: an AI assistant that prepares the client',
+        summary: 'The assistant replies in seconds, clarifies the request, schedules a meeting and hands the manager a structured lead.',
+        metrics: ['3–7 sec first reply', '24/7 availability', 'up to 60% less manual chat'],
+        details: [
+          ['Task', 'Respond immediately and turn a long conversation into a clear request that a manager can continue without rereading the chat.'],
+          ['What we designed', 'Client chat, AI qualification, an automatically assembled brief, calendar booking, manager handoff and a CRM pipeline.'],
+          ['Design', 'A focused workspace with deep graphite surfaces, bright signal accents and a friendly conversational layer.'],
+          ['Product logic', 'The scenario connects chat, calendar and CRM while preserving context at the point where a person joins the conversation.']
+        ],
+        captions: ['Case cover and target effect', 'AI dialogue with a client', 'Structured request assembled from the chat', 'Meeting selection inside the dialogue', 'Context-rich handoff to a manager', 'Lead data in the sales pipeline']
+      },
+      {
+        id: 'recruitment-ai', number: '03', status: 'Product concept', category: 'AI / recruitment',
+        title: 'SRAZU: relevant candidates straight to the manager',
+        summary: 'The system finds public job-seeker requests, processes incoming messages and passes suitable candidates to the agency team.',
+        metrics: ['24/7 new requests', 'up to 70% less manual search', 'up to 60% less routine chat'],
+        details: [
+          ['Task', 'Reduce the time recruiters spend searching, sorting and repeating the same first questions before a meaningful conversation begins.'],
+          ['What we designed', 'Source monitoring, incoming-message processing, AI filtering, candidate cards in Telegram, an initial dialogue and manager handoff.'],
+          ['Design', 'Signal Cobalt: a high-contrast operational interface with clear statuses, source markers and confidence signals.'],
+          ['Product logic', 'The case shows the flow from a public request or inbound message to a suitable candidate with context, confirmed conditions and a next step.']
+        ],
+        captions: ['Case cover and value for the agency', 'One feed for public and inbound requests', 'AI filtering and relevance analysis', 'Candidate card in Telegram', 'Initial dialogue with the candidate', 'A ready conversation handed to the manager']
+      },
+      {
+        id: 'kittennis', number: '04', status: 'Live project', category: 'Sports / web development',
+        title: 'KITTENNIS.BY: website for a tennis club',
+        summary: 'A new club website with a strong homepage, KIT Division, match results, season archive, tournaments and contacts.',
+        metrics: ['Responsive website', 'Light and dark themes', 'Optimized imagery'],
+        details: [
+          ['Task', 'Create a new visual and technical website while preserving the KIT Love to Win identity and the sections members use most.'],
+          ['What we built', 'Homepage, latest results, Division tables, season archive, tournaments, rules, partners and contacts.'],
+          ['Design', 'The visual system combines the tennis court, ball, racket and the club’s energetic sporting identity.'],
+          ['Technology', 'A lightweight responsive website built with HTML, CSS and JavaScript, with compressed image assets.']
+        ],
+        captions: ['Light theme and the main Division journey', 'Dark theme with an evening sports atmosphere', 'Match results and quick access to details']
+      }
+    ]
+  },
+  ru: {
+    open: 'Открыть кейс', close: 'Закрыть кейс', gallery: 'Экраны проекта', details: 'Подробности проекта',
+    upcoming: ['Новый проект в работе', 'Следующий кейс готовится'],
+    cases: [
+      {
+        id: 'salon-booking', number: '01', status: 'Концепт продукта', category: 'Beauty / онлайн-запись',
+        title: 'VELA Beauty: запись без звонков',
+        summary: 'Клиент видит услуги, цены, мастеров и свободные окна, а затем записывается с телефона примерно за минуту.',
+        metrics: ['~1 минута до записи', '24/7 онлайн-запись', 'до 40% меньше ручной работы'],
+        details: [
+          ['Задача', 'Убрать лишние шаги между знакомством с салоном и подтверждением визита: без звонков, ожидания ответа и скрытых цен.'],
+          ['Что спроектировали', 'Выбор услуг и цен, профили мастеров, календарь свободных окон, личный кабинет, напоминания, повторную запись и мобильный сценарий.'],
+          ['Дизайн', 'Спокойная editorial-подача с крупными фотографиями, теплыми нейтральными поверхностями и понятными состояниями записи.'],
+          ['Логика продукта', 'Концепт охватывает весь путь клиента и рабочие состояния, которые нужны салону для актуальных цен и расписания.']
+        ],
+        captions: ['Титульный экран и ценность для бизнеса', 'Главная страница, услуги и портфолио', 'Услуги, цены и итог записи', 'Мастера и свободные окна', 'Напоминания и повторная запись', 'Полный мобильный сценарий записи']
+      },
+      {
+        id: 'ai-assistant', number: '02', status: 'Концепт продукта', category: 'AI / работа с клиентами',
+        title: 'MIRA: AI-помощник, который готовит клиента',
+        summary: 'Помощник отвечает за несколько секунд, уточняет задачу, предлагает время встречи и передает менеджеру структурированную заявку.',
+        metrics: ['3–7 секунд до ответа', '24/7 на связи', 'до 60% меньше ручной переписки'],
+        details: [
+          ['Задача', 'Отвечать клиенту сразу и превращать длинную переписку в понятный запрос, который менеджер продолжит без повторных вопросов.'],
+          ['Что спроектировали', 'Чат с клиентом, AI-квалификацию, автоматический бриф, запись в календарь, передачу менеджеру и воронку в CRM.'],
+          ['Дизайн', 'Собранное рабочее пространство с глубокими графитовыми поверхностями, яркими сигнальными акцентами и дружелюбным слоем диалога.'],
+          ['Логика продукта', 'Сценарий связывает чат, календарь и CRM, сохраняя весь контекст в момент подключения человека.']
+        ],
+        captions: ['Титульный экран и целевой эффект', 'Диалог AI-помощника с клиентом', 'Структурированный запрос из переписки', 'Выбор времени встречи внутри диалога', 'Передача менеджеру со всем контекстом', 'Данные клиента в воронке продаж']
+      },
+      {
+        id: 'recruitment-ai', number: '03', status: 'Концепт продукта', category: 'AI / подбор персонала',
+        title: 'СРАЗУ: подходящие кандидаты прямо к менеджеру',
+        summary: 'Система сама находит обращения, разбирает входящие сообщения и передает кадровому агентству подходящих кандидатов.',
+        metrics: ['24/7 новые обращения', 'до 70% меньше ручного поиска', 'до 60% меньше рутинной переписки'],
+        details: [
+          ['Задача', 'Сократить время, которое рекрутеры тратят на поиск, сортировку и одинаковые первые вопросы до содержательного разговора.'],
+          ['Что спроектировали', 'Мониторинг источников, обработку входящих сообщений, AI-фильтрацию, карточки кандидатов в Telegram, первичный диалог и передачу менеджеру.'],
+          ['Дизайн', 'Signal Cobalt: контрастный рабочий интерфейс с четкими статусами, маркерами источников и сигналами релевантности.'],
+          ['Логика продукта', 'Кейс показывает путь от публичного обращения или входящего сообщения до подходящего кандидата с контекстом, согласованными условиями и следующим шагом.']
+        ],
+        captions: ['Титульный экран и ценность для агентства', 'Единый поток публичных и входящих обращений', 'AI-фильтрация и оценка релевантности', 'Карточка кандидата в Telegram', 'Первичный диалог с кандидатом', 'Готовый разговор передан менеджеру']
+      },
+      {
+        id: 'kittennis', number: '04', status: 'Реальный проект', category: 'Спорт / веб-разработка',
+        title: 'KITTENNIS.BY: сайт теннисного клуба',
+        summary: 'Новая версия сайта клуба: выразительный первый экран, КИТ Дивизион, результаты матчей, архив сезонов, турниры и контакты.',
+        metrics: ['Адаптивный сайт', 'Светлая и темная темы', 'Оптимизация изображений'],
+        details: [
+          ['Задача', 'Создать новую визуальную и техническую версию сайта, сохранив узнаваемость KIT Love to Win и важные разделы для участников.'],
+          ['Что сделали', 'Спроектировали главный экран, результаты, таблицы Дивизиона, архив сезонов, турниры, устав, партнеров и контакты.'],
+          ['Дизайн', 'Визуальная система объединяет теннисный корт, мяч, ракетку и энергичную спортивную айдентику клуба.'],
+          ['Техника', 'Легкий адаптивный сайт на HTML, CSS и JavaScript с оптимизированными изображениями.']
+        ],
+        captions: ['Светлая тема и главный сценарий КИТ Дивизиона', 'Темная тема с вечерней спортивной атмосферой', 'Результаты матчей и быстрый переход к деталям']
+      }
+    ]
+  },
+  pl: {
+    open: 'Otwórz realizację', close: 'Zamknij realizację', gallery: 'Ekrany projektu', details: 'Szczegóły projektu',
+    upcoming: ['Nowy projekt w realizacji', 'Kolejna realizacja jest przygotowywana'],
+    cases: [
+      {
+        id: 'salon-booking', number: '01', status: 'Koncepcja produktu', category: 'Beauty / rezerwacja online',
+        title: 'VELA Beauty: rezerwacja bez telefonów',
+        summary: 'Klient widzi usługi, ceny, specjalistów i wolne terminy, a potem rezerwuje wizytę z telefonu w około minutę.',
+        metrics: ['~1 minuta do rezerwacji', 'Rezerwacja 24/7', 'do 40% mniej pracy ręcznej'],
+        details: [
+          ['Cel', 'Usunąć zbędne kroki między poznaniem salonu a potwierdzeniem wizyty: bez telefonów, czekania i ukrytych cen.'],
+          ['Co zaprojektowaliśmy', 'Wybór usług i cen, profile specjalistów, kalendarz, panel klienta, przypomnienia, ponowną rezerwację i pełny scenariusz mobilny.'],
+          ['Design', 'Spokojny styl editorial z dużymi zdjęciami, ciepłymi neutralnymi powierzchniami i czytelnymi stanami rezerwacji.'],
+          ['Logika produktu', 'Koncepcja obejmuje całą ścieżkę klienta i stany operacyjne potrzebne do aktualnych cen oraz grafiku.']
+        ],
+        captions: ['Okładka i wartość dla biznesu', 'Strona główna, usługi i portfolio', 'Usługi, ceny i podsumowanie', 'Specjaliści i wolne terminy', 'Przypomnienia i ponowna rezerwacja', 'Pełna mobilna ścieżka rezerwacji']
+      },
+      {
+        id: 'ai-assistant', number: '02', status: 'Koncepcja produktu', category: 'AI / obsługa klienta',
+        title: 'MIRA: asystent AI, który przygotowuje klienta',
+        summary: 'Asystent odpowiada w kilka sekund, doprecyzowuje potrzebę, proponuje termin i przekazuje menedżerowi uporządkowane zapytanie.',
+        metrics: ['3–7 sekund do odpowiedzi', 'Dostępność 24/7', 'do 60% mniej ręcznych rozmów'],
+        details: [
+          ['Cel', 'Odpowiadać natychmiast i zmieniać długą rozmowę w jasne zapytanie, które menedżer może kontynuować bez powtórek.'],
+          ['Co zaprojektowaliśmy', 'Czat, kwalifikację AI, automatyczny brief, wybór spotkania, przekazanie menedżerowi i lejek CRM.'],
+          ['Design', 'Skupiona przestrzeń robocza z grafitowymi powierzchniami, sygnałowymi akcentami i przyjazną warstwą rozmowy.'],
+          ['Logika produktu', 'Scenariusz łączy czat, kalendarz i CRM, zachowując kontekst w chwili dołączenia człowieka.']
+        ],
+        captions: ['Okładka i docelowy efekt', 'Rozmowa asystenta AI z klientem', 'Uporządkowane zapytanie z rozmowy', 'Wybór terminu w czacie', 'Przekazanie menedżerowi z kontekstem', 'Dane klienta w lejku sprzedaży']
+      },
+      {
+        id: 'recruitment-ai', number: '03', status: 'Koncepcja produktu', category: 'AI / rekrutacja',
+        title: 'SRAZU: dopasowani kandydaci prosto do menedżera',
+        summary: 'System znajduje publiczne zgłoszenia, analizuje wiadomości przychodzące i przekazuje agencji dopasowanych kandydatów.',
+        metrics: ['Nowe zgłoszenia 24/7', 'do 70% mniej ręcznego szukania', 'do 60% mniej rutynowych rozmów'],
+        details: [
+          ['Cel', 'Ograniczyć czas poświęcany na szukanie, sortowanie i powtarzanie tych samych pytań przed właściwą rozmową.'],
+          ['Co zaprojektowaliśmy', 'Monitoring źródeł, analizę wiadomości, filtrowanie AI, karty kandydatów w Telegramie, pierwszy dialog i przekazanie menedżerowi.'],
+          ['Design', 'Signal Cobalt: kontrastowy interfejs operacyjny z jasnymi statusami, markerami źródeł i sygnałami dopasowania.'],
+          ['Logika produktu', 'Od publicznego zgłoszenia lub wiadomości do dopasowanego kandydata z kontekstem, potwierdzonymi warunkami i kolejnym krokiem.']
+        ],
+        captions: ['Okładka i wartość dla agencji', 'Jeden strumień zgłoszeń publicznych i przychodzących', 'Filtrowanie AI i ocena dopasowania', 'Karta kandydata w Telegramie', 'Pierwszy dialog z kandydatem', 'Gotowa rozmowa przekazana menedżerowi']
+      },
+      {
+        id: 'kittennis', number: '04', status: 'Wdrożony projekt', category: 'Sport / web development',
+        title: 'KITTENNIS.BY: strona klubu tenisowego',
+        summary: 'Nowa strona klubu z mocnym ekranem głównym, KIT Division, wynikami, archiwum sezonów, turniejami i kontaktem.',
+        metrics: ['Responsywna strona', 'Jasny i ciemny motyw', 'Optymalizacja obrazów'],
+        details: [
+          ['Cel', 'Stworzyć nową wizualną i techniczną wersję strony, zachowując tożsamość KIT Love to Win i ważne sekcje dla członków.'],
+          ['Co zrobiliśmy', 'Zaprojektowaliśmy stronę główną, wyniki, tabele Division, archiwum sezonów, turnieje, regulamin, partnerów i kontakt.'],
+          ['Design', 'System wizualny łączy kort, piłkę, rakietę i energiczną sportową tożsamość klubu.'],
+          ['Technologia', 'Lekka responsywna strona HTML, CSS i JavaScript ze zoptymalizowanymi obrazami.']
+        ],
+        captions: ['Jasny motyw i główna ścieżka KIT Division', 'Ciemny motyw w wieczornej atmosferze', 'Wyniki meczów i szybki dostęp do szczegółów']
+      }
+    ]
+  }
 }[locale];
-const previewAlt = {
-  en: 'Responsive KITTENNIS.BY tennis club website on desktop and mobile',
-  ru: 'Адаптивный сайт теннисного клуба KITTENNIS.BY на компьютере и телефоне',
-  pl: 'Responsywna strona klubu tenisowego KITTENNIS.BY na komputerze i telefonie'
-}[locale];
-const galleryAlts = {
-  en: ['KITTENNIS.BY homepage in light theme', 'KITTENNIS.BY homepage in dark theme', 'KITTENNIS.BY match results page'],
-  ru: ['Главная страница KITTENNIS.BY в светлой теме', 'Главная страница KITTENNIS.BY в тёмной теме', 'Страница результатов матчей KITTENNIS.BY'],
-  pl: ['Strona główna KITTENNIS.BY w jasnym motywie', 'Strona główna KITTENNIS.BY w ciemnym motywie', 'Strona wyników meczów KITTENNIS.BY']
-}[locale];
+
+const keys = ['salon', 'assistant', 'recruitment', 'kittennis'];
+const cases = copy.cases.map((item, index) => ({ ...item, images: imageSets[keys[index]] }));
+const compactCases = cases
+  .filter((item) => caseIds.includes(item.id))
+  .sort((a, b) => caseIds.indexOf(a.id) - caseIds.indexOf(b.id));
 ---
 
-<div class={`case-grid ${compact ? 'case-grid-compact' : ''}`}>
-  <article class="case-card case-card-featured" id="kittennis">
-      <a class="case-visual tennis-case-visual" href={`${localePath(locale, '/cases/')}#kittennis`} aria-label={copy.open}>
-        <img src="/cases/kittennis/home-light-full.jpg" alt={previewAlt} width="1440" height="1100" loading={compact ? 'lazy' : 'eager'} fetchpriority={compact ? 'auto' : 'high'} />
-        <div class="case-device">
-          <img src="/cases/kittennis/home-light-mobile-full.png" alt="" loading="lazy" />
+{compact ? (
+  <div class="portfolio-compact-list">
+    {compactCases.map((item) => (
+      <article class="portfolio-compact-card">
+        <a class="portfolio-compact-visual" href={`${localePath(locale, '/cases/')}#${item.id}`} aria-label={`${copy.open}: ${item.title}`}>
+          <picture>
+            {item.images[0].avif && <source srcset={item.images[0].avif} type="image/avif" />}
+            <img src={item.images[0].src} alt={item.captions[0]} width={item.id === 'kittennis' ? '1440' : '2880'} height={item.id === 'kittennis' ? '1100' : '1800'} loading="lazy" />
+          </picture>
+          <span>{item.number}</span>
+        </a>
+        <div class="portfolio-compact-copy">
+          <div class="portfolio-case-meta"><span>{item.status}</span><span>{item.category}</span></div>
+          <h3>{item.title}</h3>
+          <p>{item.summary}</p>
+          <a class="portfolio-inline-link" href={`${localePath(locale, '/cases/')}#${item.id}`}>{copy.open}<span aria-hidden="true">↗</span></a>
         </div>
-      </a>
-      <div class="case-body">
-        <div class="case-meta">
-          <span>{copy.category}</span>
-          <span>{copy.direction}</span>
-        </div>
-        <h3>{copy.title}</h3>
-        <p>{copy.summary}</p>
-        {!compact && (
-          <>
-            <div class="case-tags" aria-label={copy.tags}>
-              {copy.highlights.map((highlight) => <span>{highlight}</span>)}
-            </div>
-            <div class="case-details">
-              {copy.details.map(([title, text]) => (
-                <div>
-                  <strong>{title}</strong>
+      </article>
+    ))}
+  </div>
+) : (
+  <>
+    <div class="portfolio-case-grid">
+      {cases.map((item, index) => (
+        <article class={`portfolio-case-card portfolio-case-${item.id}`} style={`--case-order:${index}`}>
+          <button type="button" data-case-open={item.id} aria-haspopup="dialog" aria-controls={`case-${item.id}`} aria-label={`${copy.open}: ${item.title}`}>
+            <span class="portfolio-case-visual">
+              <picture>
+                {item.images[0].avif && <source srcset={item.images[0].avif} type="image/avif" />}
+                <img src={item.images[0].src} alt={item.captions[0]} width={item.id === 'kittennis' ? '1440' : '2880'} height={item.id === 'kittennis' ? '1100' : '1800'} loading={index < 2 ? 'eager' : 'lazy'} />
+              </picture>
+              <span class="portfolio-case-number" aria-hidden="true">{item.number}</span>
+              <span class="portfolio-case-status">{item.status}</span>
+            </span>
+            <span class="portfolio-case-copy">
+              <span class="portfolio-case-meta"><span>{item.category}</span><span>{item.metrics[0]}</span></span>
+              <span class="portfolio-case-title" role="heading" aria-level="2">{item.title}</span>
+              <span class="portfolio-case-summary">{item.summary}</span>
+              <span class="portfolio-case-action">{copy.open}<span aria-hidden="true">↗</span></span>
+            </span>
+          </button>
+        </article>
+      ))}
+      {copy.upcoming.map((item) => (
+        <article class="portfolio-upcoming" aria-label={item}>
+          <span>TO BE<br />CONTINUED...</span>
+          <p>{item}</p>
+        </article>
+      ))}
+    </div>
+
+    {cases.map((item) => (
+      <dialog class={`portfolio-case-dialog portfolio-dialog-${item.id}`} id={`case-${item.id}`} data-case-dialog={item.id} aria-labelledby={`case-title-${item.id}`}>
+        <div class="portfolio-dialog-shell">
+          <header class="portfolio-dialog-bar">
+            <span><b>{item.number}</b>{item.category}</span>
+            <button type="button" data-case-close title={copy.close} aria-label={copy.close}><span aria-hidden="true">×</span></button>
+          </header>
+          <div class="portfolio-dialog-content">
+            <section class="portfolio-dialog-intro">
+              <div>
+                <span class="portfolio-dialog-status">{item.status}</span>
+                <h2 id={`case-title-${item.id}`}>{item.title}</h2>
+                <p>{item.summary}</p>
+              </div>
+              <div class="portfolio-dialog-metrics">
+                {item.metrics.map((metric) => <span>{metric}</span>)}
+              </div>
+            </section>
+
+            <section class="portfolio-dialog-details" aria-label={copy.details}>
+              {item.details.map(([title, text]) => (
+                <article>
+                  <h3>{title}</h3>
                   <p>{text}</p>
-                </div>
+                </article>
               ))}
-            </div>
-            <div class="case-gallery" aria-label={copy.galleryLabel}>
-              <figure class="case-shot case-shot-wide">
-                <img src="/cases/kittennis/home-light-full.jpg" alt={galleryAlts[0]} width="1440" height="1100" loading="lazy" />
-                <figcaption>{copy.gallery[0]}</figcaption>
-              </figure>
-              <figure class="case-shot">
-                <img src="/cases/kittennis/home-dark-full.jpg" alt={galleryAlts[1]} width="1440" height="1100" loading="lazy" />
-                <figcaption>{copy.gallery[1]}</figcaption>
-              </figure>
-              <figure class="case-shot">
-                <img src="/cases/kittennis/results-light-full.jpg" alt={galleryAlts[2]} width="1440" height="1100" loading="lazy" />
-                <figcaption>{copy.gallery[2]}</figcaption>
-              </figure>
-            </div>
-          </>
-        )}
-        <p class="case-result">{copy.result}</p>
-      </div>
-    </article>
-  {copy.upcoming.map((item) => (
-    <article class="case-card case-card-upcoming">
-      <span>TO BE<br />CONTINUED...</span>
-      <p>{item}</p>
-    </article>
-  ))}
-</div>
+            </section>
+
+            <section class="portfolio-dialog-gallery" aria-label={copy.gallery}>
+              {item.images.map((image, imageIndex) => (
+                <figure>
+                  <picture>
+                    {image.avif && <source srcset={image.avif} type="image/avif" />}
+                    <img src={image.src} alt={item.captions[imageIndex]} width={item.id === 'kittennis' ? '1440' : '2880'} height={item.id === 'kittennis' ? '1100' : '1800'} loading="lazy" />
+                  </picture>
+                  <figcaption><span>{String(imageIndex + 1).padStart(2, '0')}</span>{item.captions[imageIndex]}</figcaption>
+                </figure>
+              ))}
+            </section>
+          </div>
+        </div>
+      </dialog>
+    ))}
+
+    <script>
+      const caseButtons = document.querySelectorAll('[data-case-open]');
+      const caseDialogs = document.querySelectorAll('[data-case-dialog]');
+      let activeTrigger = null;
+
+      const clearCaseHash = (caseId) => {
+        if (window.location.hash !== `#${caseId}`) return;
+        window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+      };
+
+      const openCase = (caseId, updateHash = true) => {
+        const dialog = document.querySelector(`[data-case-dialog="${caseId}"]`);
+        if (!(dialog instanceof HTMLDialogElement)) return;
+
+        caseDialogs.forEach((candidate) => {
+          if (candidate instanceof HTMLDialogElement && candidate !== dialog && candidate.open) candidate.close();
+        });
+
+        if (!dialog.open) dialog.showModal();
+        document.body.classList.add('case-dialog-open');
+        if (updateHash) window.history.replaceState(null, '', `#${caseId}`);
+      };
+
+      caseButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          activeTrigger = button;
+          openCase(button.getAttribute('data-case-open'));
+        });
+      });
+
+      caseDialogs.forEach((dialog) => {
+        if (!(dialog instanceof HTMLDialogElement)) return;
+        const caseId = dialog.getAttribute('data-case-dialog');
+        dialog.querySelector('[data-case-close]')?.addEventListener('click', () => dialog.close());
+        dialog.addEventListener('click', (event) => {
+          if (event.target === dialog) dialog.close();
+        });
+        dialog.addEventListener('close', () => {
+          document.body.classList.remove('case-dialog-open');
+          clearCaseHash(caseId);
+          if (activeTrigger instanceof HTMLElement) activeTrigger.focus({ preventScroll: true });
+        });
+      });
+
+      const openCaseFromHash = () => {
+        const caseId = window.location.hash.slice(1);
+        if (caseId) openCase(caseId, false);
+      };
+
+      openCaseFromHash();
+      window.addEventListener('hashchange', openCaseFromHash);
+    </script>
+  </>
+)}

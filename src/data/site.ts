@@ -12,11 +12,11 @@ export const site = {
   instagramLabel: '@dashkevich__studio',
   instagramUrl: 'https://www.instagram.com/dashkevich__studio/',
   description:
-    'Dashkevich Studio — студия разработки сайтов, веб-сервисов и AI-решений. Создаём frontend, backend, Telegram-ботов, интеграции и автоматизацию.',
+    'Dashkevich Studio — студия веб-разработки и автоматизации бизнеса. Создаём сайты, frontend, backend, Telegram-ботов, интеграции и AI-решения.',
   nav: [
     { href: '/', label: 'Главная' },
-    { href: '/development/', label: 'Разработка' },
-    { href: '/ai-agents/', label: 'AI-агенты' },
+    { href: '/development/', label: 'Веб-разработка' },
+    { href: '/ai-agents/', label: 'Автоматизация бизнеса' },
     { href: '/cases/', label: 'Кейсы' }
   ]
 };

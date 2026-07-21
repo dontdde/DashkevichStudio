@@ -1,7 +1,63 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';import CaseGrid from '../components/CaseGrid.astro';import {localePath,type Locale} from '../i18n';
-interface Props{locale?:Locale} const{locale='en'}=Astro.props;
-const copy={en:{title:'Web Development Case Studies',description:'Explore Dashkevich Studio web development cases with the client goal, design approach, responsive implementation, technology and delivered result.',label:'Cases',hero:'Dashkevich Studio web development cases',text:'Public projects with the business task, solution, visual logic, technical details and result.'},ru:{title:'Кейсы веб-разработки и автоматизации',description:'Кейсы Dashkevich Studio: задачи клиентов, дизайн, адаптивная разработка сайтов, технические решения и результаты реализованных проектов.',label:'Кейсы',hero:'Кейсы разработки сайтов Dashkevich Studio',text:'Реальные проекты, которые можно показать публично: задача, решение, визуальная логика, технические детали и результат.'},pl:{title:'Realizacje stron i automatyzacji',description:'Realizacje Dashkevich Studio: cele klientów, projektowanie, responsywne tworzenie stron, rozwiązania techniczne i rezultaty wdrożonych projektów.',label:'Realizacje',hero:'Realizacje stron internetowych Dashkevich Studio',text:'Publiczne projekty pokazujące zadanie biznesowe, rozwiązanie, logikę wizualną, szczegóły techniczne i rezultat.'}}[locale];
-const schema={'@context':'https://schema.org','@type':'ItemList',name:copy.hero,itemListElement:[{'@type':'ListItem',position:1,name:'KITTENNIS.BY',url:`https://dashkevichstudio.by${localePath(locale,'/cases/')}#kittennis`}]};
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CaseGrid from '../components/CaseGrid.astro';
+import { localePath, type Locale } from '../i18n';
+
+interface Props { locale?: Locale }
+
+const { locale = 'en' } = Astro.props;
+const copy = {
+  en: {
+    title: 'Digital Product, AI and Web Development Cases',
+    description: 'Dashkevich Studio cases and product concepts: online booking, AI assistants, recruitment automation and the KITTENNIS.BY tennis club website.',
+    label: 'Cases',
+    hero: 'Products explained through real scenarios',
+    text: 'Four focused cases: the business task, the designed solution, product logic and complete interface albums. Open a card to explore the details.'
+  },
+  ru: {
+    title: 'Кейсы цифровых продуктов, AI и веб-разработки',
+    description: 'Кейсы и продуктовые концепты Dashkevich Studio: онлайн-запись, AI-помощники, автоматизация подбора персонала и сайт теннисного клуба KITTENNIS.BY.',
+    label: 'Кейсы',
+    hero: 'Продукты через понятные сценарии',
+    text: 'Четыре собранных кейса: задача бизнеса, спроектированное решение, логика продукта и полные альбомы интерфейсов. Нажмите на карточку, чтобы открыть подробности.'
+  },
+  pl: {
+    title: 'Realizacje produktów cyfrowych, AI i web developmentu',
+    description: 'Realizacje i koncepcje Dashkevich Studio: rezerwacja online, asystenci AI, automatyzacja rekrutacji oraz strona klubu KITTENNIS.BY.',
+    label: 'Realizacje',
+    hero: 'Produkty pokazane przez konkretne scenariusze',
+    text: 'Cztery uporządkowane realizacje: cel biznesowy, zaprojektowane rozwiązanie, logika produktu i pełne albumy ekranów. Otwórz kartę, aby zobaczyć szczegóły.'
+  }
+}[locale];
+
+const caseNames = [
+  'VELA Beauty online booking',
+  'MIRA AI business assistant',
+  'SRAZU AI recruitment system',
+  'KITTENNIS.BY tennis club website'
+];
+const caseIds = ['salon-booking', 'ai-assistant', 'recruitment-ai', 'kittennis'];
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: copy.hero,
+  numberOfItems: caseNames.length,
+  itemListElement: caseNames.map((name, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name,
+    url: `https://dashkevichstudio.by${localePath(locale, '/cases/')}#${caseIds[index]}`
+  }))
+};
 ---
-<BaseLayout title={copy.title} description={copy.description} path={localePath(locale,'/cases/')} locale={locale} schema={schema}><section class="page-hero"><p class="section-label">{copy.label}</p><h1>{copy.hero}</h1><p>{copy.text}</p></section><section class="section"><CaseGrid locale={locale}/></section></BaseLayout>
+
+<BaseLayout title={copy.title} description={copy.description} path={localePath(locale, '/cases/')} locale={locale} schema={schema}>
+  <section class="page-hero">
+    <p class="section-label">{copy.label}</p>
+    <h1>{copy.hero}</h1>
+    <p>{copy.text}</p>
+  </section>
+  <section class="section">
+    <CaseGrid locale={locale} />
+  </section>
+</BaseLayout>
