@@ -2,7 +2,7 @@
 import { commonCopy, localePath, type Locale } from '../i18n';
 
 interface Props { locale?: Locale; }
-const { locale = 'en' } = Astro.props;
+const { locale = 'ru' } = Astro.props;
 const copy = commonCopy[locale];
 
 const apiBaseUrl = import.meta.env.PUBLIC_API_BASE_URL ?? '';

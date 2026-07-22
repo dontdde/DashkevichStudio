@@ -5,28 +5,28 @@ import { localePath, type Locale } from '../i18n';
 
 interface Props { locale?: Locale }
 
-const { locale = 'en' } = Astro.props;
+const { locale = 'ru' } = Astro.props;
 const copy = {
   en: {
     title: 'Digital Product, AI and Web Development Cases',
     description: 'Dashkevich Studio cases and product concepts: online booking, AI assistants, recruitment automation and the KITTENNIS.BY tennis club website.',
     label: 'Cases',
-    hero: 'Products explained through real scenarios',
-    text: 'Four focused cases: the business task, the designed solution, product logic and complete interface albums. Open a card to explore the details.'
+    hero: 'Solutions shaped around people, processes and business goals',
+    text: 'We start every project by understanding the task: who it is for, how the process works today and what outcome matters to the business.'
   },
   ru: {
     title: 'Кейсы цифровых продуктов, AI и веб-разработки',
     description: 'Кейсы и продуктовые концепты Dashkevich Studio: онлайн-запись, AI-помощники, автоматизация подбора персонала и сайт теннисного клуба KITTENNIS.BY.',
     label: 'Кейсы',
-    hero: 'Продукты через понятные сценарии',
-    text: 'Четыре собранных кейса: задача бизнеса, спроектированное решение, логика продукта и полные альбомы интерфейсов. Нажмите на карточку, чтобы открыть подробности.'
+    hero: 'Решения, созданные вокруг людей, процессов и целей бизнеса',
+    text: 'Каждый проект начинаем с понимания задачи: кому он нужен, как работает процесс сейчас и какой результат важен бизнесу.'
   },
   pl: {
     title: 'Realizacje produktów cyfrowych, AI i web developmentu',
     description: 'Realizacje i koncepcje Dashkevich Studio: rezerwacja online, asystenci AI, automatyzacja rekrutacji oraz strona klubu KITTENNIS.BY.',
     label: 'Realizacje',
-    hero: 'Produkty pokazane przez konkretne scenariusze',
-    text: 'Cztery uporządkowane realizacje: cel biznesowy, zaprojektowane rozwiązanie, logika produktu i pełne albumy ekranów. Otwórz kartę, aby zobaczyć szczegóły.'
+    hero: 'Rozwiązania tworzone wokół ludzi, procesów i celów biznesowych',
+    text: 'Każdy projekt zaczynamy od zrozumienia zadania: dla kogo jest, jak proces działa dziś i jaki efekt ma znaczenie dla firmy.'
   }
 }[locale];
 

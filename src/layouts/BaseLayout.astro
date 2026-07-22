@@ -17,12 +17,12 @@ interface Props {
   robots?: string;
 }
 
-const { title, description = site.description, path = '/', schema, locale = 'en', robots = 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' } = Astro.props;
+const { title, description = site.description, path = '/', schema, locale = 'ru', robots = 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' } = Astro.props;
 const copy = commonCopy[locale];
 const canonical = new URL(path, site.url).toString();
 const pageTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
 const navPaths = ['/', '/development/', '/ai-agents/', '/cases/'];
-const routeWithoutLocale = path.replace(/^\/(ru|pl)(?=\/|$)/, '') || '/';
+const routeWithoutLocale = path.replace(/^\/(en|ru|pl)(?=\/|$)/, '') || '/';
 const ogLocale = { en: 'en_US', ru: 'ru_BY', pl: 'pl_PL' }[locale];
 const alternateOgLocales = Object.values({ en: 'en_US', ru: 'ru_BY', pl: 'pl_PL' }).filter((value) => value !== ogLocale);
 const pageSchemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
@@ -101,7 +101,7 @@ const structuredData = { '@context': 'https://schema.org', '@graph': schemaGraph
     <link rel="alternate" hreflang="en" href={new URL(localePath('en', routeWithoutLocale), site.url)} />
     <link rel="alternate" hreflang="ru" href={new URL(localePath('ru', routeWithoutLocale), site.url)} />
     <link rel="alternate" hreflang="pl" href={new URL(localePath('pl', routeWithoutLocale), site.url)} />
-    <link rel="alternate" hreflang="x-default" href={new URL(localePath('en', routeWithoutLocale), site.url)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(localePath('ru', routeWithoutLocale), site.url)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-48x48.png" type="image/png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />

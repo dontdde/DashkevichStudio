@@ -20,7 +20,7 @@ const pages = {
 
 export function getStaticPaths() {
   const routes = ['', 'development', 'ai-agents', 'cases', 'privacy', 'offer', 'requisites'];
-  return (['ru', 'pl'] as const).flatMap((locale) =>
+  return (['en', 'pl'] as const).flatMap((locale) =>
     routes.map((path) => ({
       params: { lang: locale, path: path || undefined },
       props: { locale, page: path }

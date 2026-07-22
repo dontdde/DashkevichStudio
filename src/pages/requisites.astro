@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';import {site} from '../data/site';import {localePath,type Locale} from '../i18n';
-interface Props{locale?:Locale} const{locale='en'}=Astro.props;
+interface Props{locale?:Locale} const{locale='ru'}=Astro.props;
 const c={en:{title:'Self-employed details',description:'Dashkevich Studio contact and legal details.',label:'Details',heading:'Self-employed details',fields:['Service provider','Taxpayer reference','Email','Phone','Instagram']},ru:{title:'Реквизиты самозанятого',description:'Реквизиты самозанятого Dashkevich Studio для связи и юридической информации.',label:'Реквизиты',heading:'Реквизиты самозанятого',fields:['Исполнитель','ОНП','Email','Телефон','Instagram']},pl:{title:'Dane osoby samozatrudnionej',description:'Dane kontaktowe i prawne Dashkevich Studio.',label:'Dane',heading:'Dane osoby samozatrudnionej',fields:['Usługodawca','Numer podatnika','Email','Telefon','Instagram']}}[locale];
 const values=['Дашкевич Илья Валерьевич, самозанятый','AE5184647',site.email,site.phoneLabel,site.instagramLabel];
 ---

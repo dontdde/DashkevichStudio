@@ -9,11 +9,11 @@ export const languageNames: Record<Locale, string> = {
 
 export function localePath(locale: Locale, path: string): string {
   const normalized = path.startsWith('/') ? path : `/${path}`;
-  return locale === 'en' ? normalized : `/${locale}${normalized}`;
+  return locale === 'ru' ? normalized : `/${locale}${normalized}`;
 }
 
 export function localizedPathname(pathname: string, locale: Locale): string {
-  const withoutLocale = pathname.replace(/^\/(ru|pl)(?=\/|$)/, '') || '/';
+  const withoutLocale = pathname.replace(/^\/(en|ru|pl)(?=\/|$)/, '') || '/';
   return localePath(locale, withoutLocale);
 }
 

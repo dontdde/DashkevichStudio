@@ -33,7 +33,7 @@ const copy = commonCopy[locale];
       if (!(select instanceof HTMLSelectElement)) return;
       try {
         const firstSegment = select.value.split('/').filter(Boolean)[0];
-        localStorage.setItem('dashkevich-language', ['ru', 'pl'].includes(firstSegment) ? firstSegment : 'en');
+        localStorage.setItem('dashkevich-language', ['en', 'pl'].includes(firstSegment) ? firstSegment : 'ru');
       } catch {}
       window.location.assign(`${select.value}${window.location.search}${window.location.hash}`);
     });

@@ -6,7 +6,7 @@ export default defineConfig({
   integrations: [sitemap({
     filter: (page) => !/\/(privacy|offer|requisites)\/$/.test(new URL(page).pathname),
     i18n: {
-      defaultLocale: 'en',
+      defaultLocale: 'ru',
       locales: { en: 'en', ru: 'ru', pl: 'pl' }
     }
   })],
