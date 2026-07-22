@@ -3139,8 +3139,7 @@ button:focus-visible {
   object-position: center 12%;
 }
 
-.portfolio-case-number,
-.portfolio-case-status {
+.portfolio-case-number {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid oklch(0.98 0 0 / 0.28);
@@ -3156,15 +3155,6 @@ button:focus-visible {
   left: 0.8rem;
   padding: 0.48rem 0.6rem;
   top: 0.8rem;
-}
-
-.portfolio-case-status {
-  background: oklch(0.08 0.01 270 / 0.76);
-  bottom: 0.8rem;
-  font-size: 0.78rem;
-  font-weight: 780;
-  padding: 0.45rem 0.62rem;
-  right: 0.8rem;
 }
 
 .portfolio-case-copy {
@@ -3410,15 +3400,6 @@ button:focus-visible {
   display: grid;
   gap: clamp(1.5rem, 4vw, 3rem);
   grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.65fr);
-}
-
-.portfolio-dialog-status {
-  color: var(--label);
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 850;
-  margin-bottom: 0.9rem;
-  text-transform: uppercase;
 }
 
 .portfolio-dialog-intro h2 {
